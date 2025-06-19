@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard for Someone Special 💕</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka+One:wght@400&family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --primary-gradient: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fad0c4 100%);
+            --dark-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --glass-bg: rgba(255, 255, 255, 0.15);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --shadow-color: rgba(213, 63, 140, 0.25);
+            --text-primary: #d53f8c;
+            --text-secondary: #b83280;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--primary-gradient);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body.dark {
+            --primary-gradient: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --shadow-color: rgba(65, 105, 225, 0.3);
+            --text-primary: #87ceeb;
+            --text-secondary: #a0c4ff;
+            background: var(--dark-gradient);
+        }
+
+        /* Enhanced floating elements */
+        .floating-element {
+            position: absolute;
+            animation: floatComplex 12s ease-in-out infinite;
+            opacity: 0.7;
+            z-index: 1;
+            font-size: 1.2rem;
+            pointer-events: none;
+        }
+
+        .floating-element:nth-child(1) { top: 5%; left: 5%; animation-delay: 0s; }
+        .floating-element:nth-child(2) { top: 15%; right: 10%; animation-delay: 2s; }
+        .floating-element:nth-child(3) { top: 70%; left: 8%; animation-delay: 4s; }
+        .floating-element:nth-child(4) { top: 80%; right: 5%; animation-delay: 6s; }
+        .floating-element:nth-child(5) { top: 50%; right: 3%; animation-delay: 8s; }
+        .floating-element:nth-child(6) { top: 25%; left: 90%; animation-delay: 10s; }
+        .floating-element:nth-child(7) { top: 40%; left: 15%; animation-delay: 1s; }
+        .floating-element:nth-child(8) { top: 60%; right: 20%; animation-delay: 3s; }
+
+        @keyframes floatComplex {
+            0%, 100% { 
+                transform: translateY(0px) translateX(0px) rotate(0deg) scale(1); 
+                opacity: 0.7;
+            }
+            25% { 
+                transform: translateY(-20px) translateX(10px) rotate(5deg) scale(1.1); 
+                opacity: 0.9;
+            }
+            50% { 
+                transform: translateY(-10px) translateX(-5px) rotate(-3deg) scale(0.9); 
+                opacity: 0.6;
+            }
+            75% { 
+                transform: translateY(-25px) translateX(15px) rotate(8deg) scale(1.05); 
+                opacity: 0.8;
+            }
+        }
+
+        /* Particle effect background */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: radial-gradient(circle, #ff69b4, transparent);
+            border-radius: 50%;
+            animation: particleFloat 8s linear infinite;
+            opacity: 0.3;
+        }
+
+        body.dark .particle {
+            background: radial-gradient(circle, #87ceeb, transparent);
+        }
+
+        @keyframes particleFloat {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.3;
+            }
+            90% {
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Enhanced header with glassmorphism */
+        .header {
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px) saturate(180%);
+            -webkit-backdrop-filter: blur(25px) saturate(180%);
+            padding: 2rem;
+            text-align: center;
+            border-bottom: 1px solid var(--glass-border);
+            position: relative;
+            z-index: 10;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.2);
+        }
+
+        .header-content {
+            flex: 1;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-family: 'Fredoka One', cursive;
+            color: var(--text-primary);
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+            background: linear-gradient(45deg, #ff69b4, #ff1493, #d53f8c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: titleGlow 3s ease-in-out infinite alternate;
+        }
+
+        body.dark .header h1 {
+            background: linear-gradient(45deg, #87ceeb, #4169e1, #1e3a8a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        @keyframes titleGlow {
+            0% { filter: drop-shadow(0 0 5px rgba(255, 105, 180, 0.5)); }
+            100% { filter: drop-shadow(0 0 20px rgba(255, 105, 180, 0.8)); }
+        }
+
+        .header p {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            font-style: italic;
+            font-weight: 400;
+            opacity: 0.9;
+        }
+
+        /* Enhanced theme toggle */
+        .theme-toggle {
+            position: relative;
+            width: 70px;
+            height: 35px;
+            background: linear-gradient(45deg, #ff69b4, #ff1493);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            padding: 4px;
+            box-shadow: 0 4px 15px rgba(255, 105, 180, 0.3);
+        }
+
+        body.dark .theme-toggle {
+            background: linear-gradient(45deg, #4169e1, #1e3a8a);
+            box-shadow: 0 4px 15px rgba(65, 105, 225, 0.3);
+        }
+
+        .theme-toggle::before {
+            content: '☀️';
+            position: absolute;
+            left: 8px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            z-index: 1;
+        }
+
+        body.dark .theme-toggle::before {
+            content: '🌙';
+            left: 45px;
+        }
+
+        .toggle-slider {
+            width: 27px;
+            height: 27px;
+            background: white;
+            border-radius: 50%;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 2;
+        }
+
+        body.dark .toggle-slider {
+            transform: translateX(35px);
+            background: #e6f3ff;
+        }
+
+        /* Enhanced dashboard */
+        .dashboard {
+            max-width: 1400px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Enhanced grid with better spacing */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+            margin-bottom: 3rem;
+        }
+
+        /* Redesigned cards with advanced glassmorphism */
+        .dashboard-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-radius: 25px;
+            padding: 2.5rem 2rem;
+            box-shadow: 0 12px 40px var(--shadow-color);
+            border: 1px solid var(--glass-border);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+        }
+
+        .dashboard-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .dashboard-card:hover::before {
+            left: 100%;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-15px) rotateX(5deg) rotateY(5deg);
+            box-shadow: 0 25px 60px var(--shadow-color);
+            border-color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        body.dark .dashboard-card:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .dashboard-card.active {
+            background: linear-gradient(135deg, #ff69b4, #ff1493, #d53f8c);
+            color: white;
+            transform: scale(1.05) translateY(-10px);
+            box-shadow: 0 20px 50px rgba(255, 105, 180, 0.4);
+        }
+
+        body.dark .dashboard-card.active {
+            background: linear-gradient(135deg, #4169e1, #1e3a8a, #0f172a);
+        }
+
+        .dashboard-card.active h3,
+        .dashboard-card.active p {
+            color: white;
+        }
+
+        .card-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            display: block;
+            text-align: center;
+            animation: iconPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes iconPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .card-title {
+            color: var(--text-primary);
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+            text-align: center;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        .card-description {
+            color: var(--text-secondary);
+            text-align: center;
+            line-height: 1.6;
+            font-weight: 400;
+            opacity: 0.9;
+        }
+
+        /* Enhanced content areas */
+        .content-area {
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px) saturate(180%);
+            -webkit-backdrop-filter: blur(25px) saturate(180%);
+            border-radius: 30px;
+            padding: 3rem;
+            margin: 2rem 0;
+            box-shadow: 0 15px 50px var(--shadow-color);
+            border: 1px solid var(--glass-border);
+            display: none;
+            animation: contentSlideIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .content-area::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #ff69b4, #ff1493, #d53f8c);
+            border-radius: 30px 30px 0 0;
+        }
+
+        body.dark .content-area::before {
+            background: linear-gradient(90deg, #4169e1, #1e3a8a, #0f172a);
+        }
+
+        .content-area.active {
+            display: block;
+        }
+
+        .content-area h2 {
+            color: var(--text-primary);
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+            text-align: center;
+            font-weight: 600;
+            letter-spacing: -1px;
+        }
+
+        .content-area p {
+            color: #2d3748;
+            line-height: 1.8;
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            font-weight: 400;
+        }
+
+        body.dark .content-area p {
+            color: #e2e8f0;
+        }
+
+        @keyframes contentSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(50px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Enhanced image grid */
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1.5rem;
+            margin: 2.5rem 0;
+        }
+
+        .image-placeholder {
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, #fbb6ce, #f687b3, #ed64a6);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 25px rgba(251, 182, 206, 0.3);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        body.dark .image-placeholder {
+            background: linear-gradient(135deg, #4169e1, #1e3a8a, #0f172a);
+            box-shadow: 0 8px 25px rgba(65, 105, 225, 0.3);
+        }
+
+        .image-placeholder::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(255, 255, 255, 0.2), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .image-placeholder:hover::before {
+            transform: translateX(100%);
+        }
+
+        .image-placeholder:hover {
+            transform: scale(1.08) rotate(2deg);
+            box-shadow: 0 15px 40px rgba(251, 182, 206, 0.4);
+        }
+
+        body.dark .image-placeholder:hover {
+            box-shadow: 0 15px 40px rgba(65, 105, 225, 0.4);
+        }
+
+        /* Enhanced navigation */
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin: 3rem 0;
+        }
+
+        .nav-btn {
+            padding: 1rem 2rem;
+            background: linear-gradient(45deg, #ff69b4, #ff1493);
+            border: none;
+            border-radius: 30px;
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 6px 20px rgba(255, 105, 180, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        body.dark .nav-btn {
+            background: linear-gradient(45deg, #4169e1, #1e3a8a);
+            box-shadow: 0 6px 20px rgba(65, 105, 225, 0.3);
+        }
+
+        .nav-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .nav-btn:hover::before {
+            left: 100%;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 10px 30px rgba(255, 105, 180, 0.4);
+        }
+
+        body.dark .nav-btn:hover {
+            box-shadow: 0 10px 30px rgba(65, 105, 225, 0.4);
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(45deg, #d53f8c, #b83280);
+            transform: scale(0.95);
+        }
+
+        body.dark .nav-btn.active {
+            background: linear-gradient(45deg, #1e3a8a, #0f172a);
+        }
+
+        /* Loading animation */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ff9a9e, #fecfef);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #ff69b4;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive enhancements */
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .header h1 {
+                font-size: 2.2rem;
+            }
+            .header p {
+                font-size: 1rem;
+            }
+            .dashboard {
+                padding: 0 1rem;
+                margin: 2rem auto;
+            }
+            .content-area {
+                padding: 2rem;
+                margin: 1.5rem 0;
+            }
+            .content-area h2 {
+                font-size: 2rem;
+            }
+            .image-grid {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: 1.5rem 1rem;
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            .dashboard-card {
+                padding: 2rem 1.5rem;
+            }
+            .card-icon {
+                font-size: 3rem;
+            }
+            .nav-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            .nav-btn {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Particle effect -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Enhanced floating elements -->
+    <div class="floating-element">🌸</div>
+    <div class="floating-element">🌺</div>
+    <div class="floating-element">🌷</div>
+    <div class="floating-element">🌹</div>
+    <div class="floating-element">💐</div>
+    <div class="floating-element">🌻</div>
+    <div class="floating-element">✨</div>
+    <div class="floating-element">💫</div>
+
+    <!-- Enhanced header -->
+    <div class="header">
+        <div></div>
+        <div class="header-content">
+            <h1>Tiny Human's Special Dashboard 🧚‍♀️</h1>
+            <p>Made with love for our favorite pocket-sized person</p>
+        </div>
+        <div class="theme-toggle" onclick="toggleTheme()">
+            <div class="toggle-slider"></div>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div class="dashboard">
+        <!-- Enhanced dashboard grid -->
+        <div class="dashboard-grid">
+            <div class="dashboard-card" onclick="showContent('about')">
+                <span class="card-icon">✨</span>
+                <h3 class="card-title">About You</h3>
+                <p class="card-description">All the amazing things that make you uniquely wonderful</p>
+            </div>
+
+            <div class="dashboard-card" onclick="showContent('memories')">
+                <span class="card-icon">📸</span>
+                <h3 class="card-title">Our Memories</h3>
+                <p class="card-description">Beautiful moments we've shared together</p>
+            </div>
+
+            <div class="dashboard-card" onclick="showContent('qualities')">
+                <span class="card-icon">💖</span>
+                <h3 class="card-title">Your Qualities</h3>
+                <p class="card-description">Everything I admire and cherish about you</p>
+            </div>
+
+            <div class="dashboard-card" onclick="showContent('favorites')">
+                <span class="card-icon">🎀</span>
+                <h3 class="card-title">Your Favorites</h3>
+                <p class="card-description">Things that bring joy to your heart</p>
+            </div>
+
+            <div class="dashboard-card" onclick="showContent('photos')">
+                <span class="card-icon">🖼️</span>
+                <h3 class="card-title">Photo Gallery</h3>
+                <p class="card-description">Pictures that capture our beautiful journey</p>
+            </div>
+
+            <div class="dashboard-card" onclick="showContent('message')">
+                <span class="card-icon">💌</span>
+                <h3 class="card-title">Special Message</h3>
+                <p class="card-description">Something heartfelt written just for you</p>
+            </div>
+        </div>
+
+        <!-- Enhanced content areas -->
+        <div id="about-content" class="content-area">
+            <h2>✨ About You</h2>
+            <p>You are an extraordinary person who brings light and joy wherever you go. Your unique personality shines through in everything you do, and the way you see the world is truly magical.</p>
+            <p>Whether it's your infectious laughter, your creative mind, your compassionate heart, or your incredible strength, you have this amazing ability to make everyone around you feel special and loved.</p>
+            <p>This section is dedicated to celebrating all the wonderful qualities that make you uniquely, beautifully you.</p>
+        </div>
+
+        <div id="memories-content" class="content-area">
+            <h2>📸 Our Memories</h2>
+            <p>Every moment we've shared together has been a treasure. From the first time we met to our latest adventure, each memory holds a special place in my heart.</p>
+            <p>The inside jokes that make us laugh until our stomachs hurt, the deep conversations that last for hours, the spontaneous adventures, and even the quiet moments of comfortable silence - they all weave together to create the beautiful tapestry of our friendship.</p>
+            <div class="image-grid">
+                <div class="image-placeholder">📷</div>
+                <div class="image-placeholder">🎉</div>
+                <div class="image-placeholder">🌟</div>
+                <div class="image-placeholder">💫</div>
+                <div class="image-placeholder">🎈</div>
+                <div class="image-placeholder">🎊</div>
+            </div>
+        </div>
+
+        <div id="qualities-content" class="content-area">
+            <h2>💖 Your Amazing Qualities</h2>
+            <p>Your kindness touches everyone around you like gentle ripples in a pond. You have this incredible ability to see the best in people and situations, even when things get tough.</p>
+            <p>Your sense of humor can light up the darkest room, and your creativity knows no bounds. You approach life with such genuine curiosity and enthusiasm that it's impossible not to be inspired by you.</p>
+            <p>Your strength - both inner and outer - amazes me every day. You face challenges with grace, support others with compassion, and never lose sight of what truly matters.</p>
+            <p>Most importantly, you have this beautiful authenticity that makes you irreplaceable. You're not trying to be anyone else - you're perfectly, wonderfully you.</p>
+        </div>
+
+        <div id="favorites-content" class="content-area">
+            <h2>🎀 Things You Love</h2>
+            <p>Your favorite things paint a beautiful picture of who you are. Whether it's the colors that make you smile, the music that makes you dance like nobody's watching, or the books that transport you to other worlds.</p>
+            <p>The foods that bring comfort to your soul, the places you dream of exploring, the activities that make you lose track of time - each favorite thing is a window into your beautiful heart.</p>
+            <p>I love discovering new things that make your eyes light up, and I cherish knowing the little details that bring you joy.</p>
+        </div>
+
+        <div id="photos-content" class="content-area">
+            <h2>🖼️ Photo Gallery</h2>
+            <p>A collection of beautiful moments captured in time, each one telling a story of joy, friendship, and the magic of shared experiences.</p>
+            <div class="image-grid">
+                <div class="image-placeholder">🌸</div>
+                <div class="image-placeholder">🌺</div>
+                <div class="image-placeholder">🌻</div>
+                <div class="image-placeholder">🌷</div>
+                <div class="image-placeholder">🌹</div>
+                <div class="image-placeholder">💐</div>
+                <div class="image-placeholder">🦋</div>
+                <div class="image-placeholder">🌈</div>
+            </div>
+            <p>Each image here represents a moment of happiness, a shared laugh, or a memory that will last forever. These visual reminders of our journey together are treasures I hold dear.</p>
+        </div>
+
+        <div id="message-content" class="content-area">
+            <h2>💌 A Special Message</h2>
+            <p>Thank you for being such an incredible person in my life. Your friendship is one of the greatest gifts I've ever received, and I wanted to create something special to show you just how much you mean to me.</p>
+            <p>You bring so much light, laughter, and love into this world. Your presence makes everything better - the good times more joyful and the challenging times more bearable.</p>
+            <p>This little digital space is my way of celebrating the amazing person you are. Every color, every animation, every word has been chosen with you in mind, because you deserve to be celebrated every single day.</p>
+            <p>Never forget how truly special you are, how much you're loved, and how much brighter the world is because you're in it. 💕</p>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark');
+            localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+        }
+
+        function loadTheme() {
+            if (localStorage.getItem('theme') === 'dark') {
+                document.body.classList.add('dark');
+            }
+        }
+
+        function showContent(section) {
+            document.querySelectorAll('.content-area').forEach(content => content.classList.remove('active'));
+            document.querySelectorAll('.dashboard-card').forEach(card => card.classList.remove('active'));
+
+            const targetContent = document.getElementById(section + '-content');
+            const targetCard = document.querySelector(`[onclick="showContent('${section}')"]`);
+            
+            if (targetContent) {
+                targetContent.classList.add('active');
+            }
+            if (targetCard) {
+                targetCard.classList.add('active');
+            }
+        }
+
+        function hideLoading() {
+            const overlay = document.getElementById('loadingOverlay');
+            overlay.style.display = 'none';
+        }
+
+        function createNavigation() {
+            const dashboard = document.querySelector('.dashboard');
+            const nav = document.createElement('div');
+            nav.className = 'nav-buttons';
+            nav.innerHTML = `
+                <button class="nav-btn" onclick="showContent('about')">About</button>
+                <button class="nav-btn" onclick="showContent('memories')">Memories</button>
+                <button class="nav-btn" onclick="showContent('qualities')">Qualities</button>
+                <button class="nav-btn" onclick="showContent('favorites')">Favorites</button>
+                <button class="nav-btn" onclick="showContent('photos')">Photos</button>
+                <button class="nav-btn" onclick="showContent('message')">Message</button>
+            `;
+            dashboard.appendChild(nav);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadTheme();
+            hideLoading();
+            createNavigation();
+            showContent('about');
+        });
+
+        window.addEventListener('resize', () => {
+            const width = window.innerWidth;
+            document.querySelectorAll('.dashboard-card').forEach(card => {
+                card.style.margin = width <= 768 ? '0 auto' : '';
+            });
+        });
+    </script>
+    </body>
+</html>
