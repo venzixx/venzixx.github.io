@@ -1,887 +1,997 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Dashboard for Someone Special 💕</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tiny Human's Dashboard 💕</title>
+  <style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
-        :root {
-            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            --warm-gradient: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
-            --bg-light: #fafbfc;
-            --bg-dark: #0f0f23;
-            --card-light: rgba(255, 255, 255, 0.9);
-            --card-dark: rgba(30, 30, 60, 0.9);
-            --text-light: #2d3748;
-            --text-dark: #e2e8f0;
-            --shadow-light: 0 10px 30px rgba(0, 0, 0, 0.1);
-            --shadow-dark: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
+    :root {
+        --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        --warm-gradient: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        --bg-light: #fafbfc;
+        --bg-dark: #0f0f23;
+        --card-light: rgba(255, 255, 255, 0.9);
+        --card-dark: rgba(30, 30, 60, 0.9);
+        --text-light: #2d3748;
+        --text-dark: #e2e8f0;
+        --shadow-light: 0 10px 30px rgba(0, 0, 0, 0.1);
+        --shadow-dark: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
 
-        body {
-            font-family: 'Arial', sans-serif;
-            background: var(--bg-light);
-            color: var(--text-light);
-            min-height: 100vh;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            overflow-x: hidden;
-            position: relative;
-        }
+    body {
+        font-family: 'Arial', sans-serif;
+        background: var(--bg-light);
+        color: var(--text-light);
+        min-height: 100vh;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        overflow-x: hidden;
+        position: relative;
+        scroll-behavior: smooth;
+    }
 
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 20% 80%, rgba(102, 126, 234, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(245, 87, 108, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(79, 172, 254, 0.05) 0%, transparent 50%);
-            pointer-events: none;
-            z-index: -1;
-        }
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: 
+            radial-gradient(circle at 20% 80%, rgba(102, 126, 234, 0.1) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(245, 87, 108, 0.1) 0%, transparent 50%),
+            radial-gradient(circle at 40% 40%, rgba(79, 172, 254, 0.05) 0%, transparent 50%);
+        pointer-events: none;
+        z-index: -1;
+    }
 
-        body.dark {
-            background: var(--bg-dark);
-            color: var(--text-dark);
-        }
+    body.dark {
+        background: var(--bg-dark);
+        color: var(--text-dark);
+    }
 
-        body.dark::before {
-            background: 
-                radial-gradient(circle at 20% 80%, rgba(102, 126, 234, 0.05) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(245, 87, 108, 0.05) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(79, 172, 254, 0.03) 0%, transparent 50%);
-        }
+    body.dark::before {
+        background: 
+            radial-gradient(circle at 20% 80%, rgba(102, 126, 234, 0.05) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(245, 87, 108, 0.05) 0%, transparent 50%),
+            radial-gradient(circle at 40% 40%, rgba(79, 172, 254, 0.03) 0%, transparent 50%);
+    }
 
-        /* Floating Elements */
-        .floating-element {
-            position: fixed;
-            font-size: 2rem;
-            opacity: 0.6;
-            animation: float 6s ease-in-out infinite;
-            pointer-events: none;
-            z-index: 1;
-        }
+    .hidden {
+        display: none;
+    }
 
-        .floating-element:nth-child(1) {
-            top: 20%;
-            left: 10%;
-            animation-delay: 0s;
-        }
+    /* Floating Elements */
+    .floating-element {
+        position: fixed;
+        font-size: 2rem;
+        opacity: 0.6;
+        animation: float 6s ease-in-out infinite;
+        pointer-events: none;
+        z-index: 1;
+    }
 
-        .floating-element:nth-child(2) {
-            top: 60%;
-            right: 15%;
-            animation-delay: 2s;
-        }
+    .floating-element:nth-child(1) {
+        top: 20%;
+        left: 10%;
+        animation-delay: 0s;
+    }
 
-        .floating-element:nth-child(3) {
-            top: 40%;
-            left: 80%;
-            animation-delay: 4s;
-        }
+    .floating-element:nth-child(2) {
+        top: 60%;
+        right: 15%;
+        animation-delay: 2s;
+    }
 
-        .floating-element:nth-child(4) {
-            top: 80%;
-            left: 20%;
-            animation-delay: 1s;
-        }
+    .floating-element:nth-child(3) {
+        top: 40%;
+        left: 80%;
+        animation-delay: 4s;
+    }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            25% { transform: translateY(-20px) rotate(5deg); }
-            50% { transform: translateY(-10px) rotate(-5deg); }
-            75% { transform: translateY(-15px) rotate(3deg); }
-        }
+    .floating-element:nth-child(4) {
+        top: 80%;
+        left: 20%;
+        animation-delay: 1s;
+    }
 
-        /* Header */
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 2rem;
-            backdrop-filter: blur(20px);
-            background: rgba(255, 255, 255, 0.1);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
+    @keyframes float {
+        0%, 100% { transform: translateY(0px) rotate(0deg); }
+        25% { transform: translateY(-20px) rotate(5deg); }
+        50% { transform: translateY(-10px) rotate(-5deg); }
+        75% { transform: translateY(-15px) rotate(3deg); }
+    }
 
-        .header-content {
-            text-align: center;
-            flex-grow: 1;
-        }
+    /* Header */
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 2rem;
+        backdrop-filter: blur(20px);
+        background: rgba(255, 255, 255, 0.1);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
 
-        .header h1 {
-            font-size: 2.5rem;
-            background: var(--primary-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 0.5rem;
-            animation: shimmer 3s ease-in-out infinite;
-        }
+    .header-content {
+        text-align: center;
+        flex-grow: 1;
+    }
 
-        @keyframes shimmer {
-            0%, 100% { filter: hue-rotate(0deg); }
-            50% { filter: hue-rotate(20deg); }
-        }
+    .header h1 {
+        font-size: 2.5rem;
+        background: var(--primary-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 0.5rem;
+        animation: shimmer 3s ease-in-out infinite;
+    }
 
-        .header p {
-            font-size: 1.1rem;
-            opacity: 0.8;
-        }
+    @keyframes shimmer {
+        0%, 100% { filter: hue-rotate(0deg); }
+        50% { filter: hue-rotate(20deg); }
+    }
 
-        /* Theme Toggle */
-        .theme-toggle {
-            width: 60px;
-            height: 30px;
-            background: var(--primary-gradient);
-            border-radius: 25px;
-            position: relative;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
+    .header p {
+        font-size: 1.1rem;
+        opacity: 0.8;
+    }
 
-        .toggle-slider {
-            width: 26px;
-            height: 26px;
-            background: white;
-            border-radius: 50%;
-            position: absolute;
-            top: 2px;
-            left: 2px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-        }
+    /* Theme Toggle */
+    .theme-toggle {
+        width: 60px;
+        height: 30px;
+        background: var(--primary-gradient);
+        border-radius: 25px;
+        position: relative;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
 
-        body.dark .toggle-slider {
-            transform: translateX(30px);
-            background: #2d3748;
-        }
+    .toggle-slider {
+        width: 26px;
+        height: 26px;
+        background: white;
+        border-radius: 50%;
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
 
-        /* Dashboard */
-        .dashboard {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
+    body.dark .toggle-slider {
+        transform: translateX(30px);
+        background: #2d3748;
+    }
 
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
+    /* Main Container */
+    .main-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+        display: grid;
+        grid-template-columns: 250px 1fr;
+        gap: 2rem;
+        align-items: start;
+    }
 
-        .dashboard-card {
-            background: var(--card-light);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 20px;
-            padding: 2rem;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: var(--shadow-light);
-            position: relative;
-            overflow: hidden;
-        }
+    /* Sidebar Navigation */
+    .sidebar-nav {
+        position: sticky;
+        top: 120px;
+        background: var(--card-light);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 20px;
+        padding: 1.5rem;
+        box-shadow: var(--shadow-light);
+        height: fit-content;
+        animation: slideInLeft 0.8s ease-out;
+    }
 
-        body.dark .dashboard-card {
-            background: var(--card-dark);
-            border-color: rgba(255, 255, 255, 0.1);
-            box-shadow: var(--shadow-dark);
-        }
+    body.dark .sidebar-nav {
+        background: var(--card-dark);
+        border-color: rgba(255, 255, 255, 0.1);
+        box-shadow: var(--shadow-dark);
+    }
 
-        .dashboard-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s;
-        }
+    .nav-title {
+        font-size: 1.2rem;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 1.5rem;
+        background: var(--primary-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
 
-        .dashboard-card:hover::before {
-            left: 100%;
-        }
+    .nav-item {
+        display: flex;
+        align-items: center;
+        padding: 1rem;
+        margin-bottom: 0.5rem;
+        border-radius: 15px;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+    }
 
-        .dashboard-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-        }
+    .nav-item::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+        transition: left 0.5s;
+    }
 
-        .dashboard-card.active {
-            background: var(--primary-gradient);
-            color: white;
-            transform: translateY(-5px) scale(1.05);
-        }
+    .nav-item:hover::before {
+        left: 100%;
+    }
 
-        .card-icon {
-            font-size: 3rem;
-            display: block;
-            margin-bottom: 1rem;
-            animation: bounce 2s infinite;
-        }
+    .nav-item:hover {
+        transform: translateX(5px);
+        background: rgba(255, 255, 255, 0.1);
+    }
 
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-            40% { transform: translateY(-10px); }
-            60% { transform: translateY(-5px); }
-        }
+    .nav-item.active {
+        background: var(--primary-gradient);
+        color: white;
+        transform: translateX(5px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
 
-        .card-title {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-            font-weight: bold;
-        }
+    .nav-icon {
+        font-size: 1.5rem;
+        margin-right: 0.8rem;
+        transition: transform 0.3s ease;
+    }
 
-        .card-description {
-            opacity: 0.8;
-            line-height: 1.5;
-        }
+    .nav-item:hover .nav-icon {
+        transform: scale(1.2);
+    }
 
-        /* Navigation */
-        .nav-buttons {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
+    .nav-text {
+        font-weight: 500;
+        font-size: 0.95rem;
+    }
 
-        .nav-btn {
-            padding: 0.8rem 2rem;
-            border: none;
-            border-radius: 25px;
-            background: var(--card-light);
-            color: var(--text-light);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 500;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
+    /* Content Area */
+    .content-container {
+        min-height: 100vh;
+    }
 
-        body.dark .nav-btn {
-            background: var(--card-dark);
-            color: var(--text-dark);
-            border-color: rgba(255, 255, 255, 0.1);
-        }
+    .content-section {
+        background: var(--card-light);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 25px;
+        padding: 3rem;
+        box-shadow: var(--shadow-light);
+        margin-bottom: 2rem;
+        opacity: 0;
+        transform: translateY(50px);
+        transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
 
-        .nav-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
+    body.dark .content-section {
+        background: var(--card-dark);
+        border-color: rgba(255, 255, 255, 0.1);
+        box-shadow: var(--shadow-dark);
+    }
 
-        .nav-btn.active {
-            background: var(--secondary-gradient);
-            color: white;
-            transform: translateY(-2px);
-        }
+    .content-section.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
 
-        /* Content Areas */
-        .content-area {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 3rem;
-            background: var(--card-light);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 25px;
-            box-shadow: var(--shadow-light);
+    .content-section.active {
+        animation: slideInRight 0.8s ease-out;
+    }
+
+    .content-section h2 {
+        font-size: 2.5rem;
+        margin-bottom: 2rem;
+        background: var(--warm-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-align: center;
+        animation: fadeInUp 0.8s ease-out 0.2s both;
+    }
+
+    .content-section p {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        margin-bottom: 1.5rem;
+        text-align: justify;
+        animation: fadeInUp 0.8s ease-out 0.4s both;
+    }
+
+    .content-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .content-list li {
+        background: rgba(255, 255, 255, 0.1);
+        margin: 0.5rem 0;
+        padding: 1rem;
+        border-radius: 15px;
+        border-left: 4px solid;
+        border-image: var(--primary-gradient) 1;
+        animation: fadeInUp 0.8s ease-out 0.6s both;
+    }
+
+    /* Image Grid */
+    .image-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1.5rem;
+        margin-top: 2rem;
+    }
+
+    .image-placeholder {
+        aspect-ratio: 1;
+        background: var(--accent-gradient);
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+        color: white;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        animation: fadeInUp 0.8s ease-out 0.6s both;
+    }
+
+    .image-placeholder:hover {
+        transform: scale(1.05) rotate(2deg);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Animations */
+    @keyframes slideInLeft {
+        from {
             opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            display: none;
+            transform: translateX(-50px);
         }
-
-        body.dark .content-area {
-            background: var(--card-dark);
-            border-color: rgba(255, 255, 255, 0.1);
-            box-shadow: var(--shadow-dark);
+        to {
+            opacity: 1;
+            transform: translateX(0);
         }
+    }
 
-        .content-area.active {
+    @keyframes slideInRight {
+        from {
+            opacity: 0;
+            transform: translateX(50px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
             opacity: 1;
             transform: translateY(0);
-            display: block;
-            animation: slideIn 0.6s ease-out;
         }
+    }
 
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+    /* Scroll Progress Indicator */
+    .progress-bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 0%;
+        height: 4px;
+        background: var(--primary-gradient);
+        z-index: 1000;
+        transition: width 0.3s ease;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .main-container {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            padding: 1rem;
         }
-
-        .content-area h2 {
-            font-size: 2.5rem;
-            margin-bottom: 2rem;
-            background: var(--warm-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-align: center;
-        }
-
-        .content-area p {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            margin-bottom: 1.5rem;
-            text-align: justify;
-        }
-
-        /* Image Grid */
-        .image-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .image-placeholder {
-            aspect-ratio: 1;
-            background: var(--accent-gradient);
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-            color: white;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .image-placeholder:hover {
-            transform: scale(1.05) rotate(2deg);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .header {
-                padding: 1rem;
-            }
-            
-            .header h1 {
-                font-size: 2rem;
-            }
-            
-            .dashboard {
-                padding: 1rem;
-            }
-            
-            .dashboard-grid {
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
-            }
-            
-            .dashboard-card {
-                padding: 1.5rem;
-            }
-            
-            .content-area {
-                padding: 2rem;
-                margin: 1rem;
-            }
-            
-            .nav-buttons {
-                gap: 0.5rem;
-            }
-            
-            .nav-btn {
-                padding: 0.6rem 1.5rem;
-                font-size: 0.9rem;
-            }
-        }
-
-        /* Special Effects */
-        .sparkle {
-            position: absolute;
-            width: 6px;
-            height: 6px;
-            background: #fff;
-            border-radius: 50%;
-            animation: sparkle 1.5s ease-in-out infinite;
-        }
-
-        @keyframes sparkle {
-            0%, 100% { opacity: 0; transform: scale(0); }
-            50% { opacity: 1; transform: scale(1); }
-        }
-
-        /* Heart Animation */
-        .heart-float {
-            position: fixed;
-            pointer-events: none;
-            font-size: 1.5rem;
-            color: #ff6b6b;
-            animation: heartFloat 3s ease-out forwards;
-            z-index: 1000;
-        }
-
-        @keyframes heartFloat {
-            0% {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(-100px) scale(0.5);
-            }
-        }
-    </style>
-</head>
-<body>
-    <!-- Floating emojis -->
-    <div class="floating-element">🌸</div>
-    <div class="floating-element">🌺</div>
-    <div class="floating-element">🌷</div>
-    <div class="floating-element">✨</div>
-
-    <!-- Header -->
-    <div class="header">
-        <div></div>
-        <div class="header-content">
-            <h1>Tiny Human's Special Dashboard 🧚‍♀️</h1>
-            <p>Made with love for our favorite pocket-sized person</p>
-        </div>
-        <div class="theme-toggle" onclick="toggleTheme()">
-            <div class="toggle-slider"></div>
-        </div>
-    </div>
-
-    <!-- Dashboard -->
-    <div class="dashboard">
-        <div class="dashboard-grid">
-            <div class="dashboard-card" onclick="showContent('about')">
-                <span class="card-icon">✨</span>
-                <h3 class="card-title">About You</h3>
-                <p class="card-description">All the amazing things that make you uniquely wonderful</p>
-            </div>
-            <div class="dashboard-card" onclick="showContent('memories')">
-                <span class="card-icon">📸</span>
-                <h3 class="card-title">Our Memories</h3>
-                <p class="card-description">Beautiful moments we've shared together</p>
-            </div>
-            <div class="dashboard-card" onclick="showContent('qualities')">
-                <span class="card-icon">💖</span>
-                <h3 class="card-title">Your Qualities</h3>
-                <p class="card-description">Everything I admire and cherish about you</p>
-            </div>
-            <div class="dashboard-card" onclick="showContent('favorites')">
-                <span class="card-icon">🎀</span>
-                <h3 class="card-title">Your Favorites</h3>
-                <p class="card-description">Things that bring joy to your heart</p>
-            </div>
-            <div class="dashboard-card" onclick="showContent('photos')">
-                <span class="card-icon">🖼️</span>
-                <h3 class="card-title">Photo Gallery</h3>
-                <p class="card-description">Pictures that capture our beautiful journey</p>
-            </div>
-            <div class="dashboard-card" onclick="showContent('message')">
-                <span class="card-icon">💌</span>
-                <h3 class="card-title">Special Message</h3>
-                <p class="card-description">Something heartfelt written just for you</p>
-            </div>
-        </div>
-
-        <!-- Navigation buttons will be added by JS -->
-    </div>
-
-    <!-- Content sections -->
-    <div id="about-content" class="content-area">
-        <h2>✨ About You</h2>
-        <p>You are an extraordinary person who brings light to every room you enter. Your smile has the power to brighten even the cloudiest days, and your laughter is like music that makes everyone around you feel happy and alive.</p>
-        <p>You have this incredible ability to see the good in everything and everyone. Your curiosity about the world is infectious, and watching you discover new things fills my heart with so much joy. You approach life with such wonder and enthusiasm that it reminds me to appreciate the simple, beautiful moments we often take for granted.</p>
-        <p>Your kindness knows no bounds, and the way you care for others - whether it's a friend who's feeling sad, a pet that needs attention, or even a stranger who could use a smile - shows what a beautiful soul you have. You make this world a better place just by being in it, and never lose sight of what truly matters.</p>
-    </div>
-
-    <div id="memories-content" class="content-area">
-        <h2>📸 Our Memories</h2>
-        <p>Every moment we've shared together has become a precious treasure in my heart. From the silly conversations that made us laugh until our stomachs hurt, to the quiet moments where we just enjoyed each other's company, each memory is a beautiful piece of our story.</p>
-        <p>I remember the first time you showed me your favorite book, the way your eyes lit up as you explained why you loved each character. I remember our adventures in the kitchen, making cookies that were more flour than cookie dough, but tasting like pure happiness. I remember the way you dance when your favorite song comes on, completely free and full of joy.</p>
-        <p>These memories aren't just moments in time - they're proof of the incredible bond we share and the beautiful journey we're on together. Each one makes me grateful to be part of your life.</p>
-        <div class="image-grid">
-            <div class="image-placeholder">📷</div>
-            <div class="image-placeholder">🎉</div>
-            <div class="image-placeholder">🌈</div>
-            <div class="image-placeholder">🎂</div>
-            <div class="image-placeholder">🎈</div>
-            <div class="image-placeholder">🎪</div>
-        </div>
-    </div>
-
-    <div id="qualities-content" class="content-area">
-        <h2>💖 Your Amazing Qualities</h2>
-        <p>Your kindness touches everyone around you in the most beautiful way. You have this incredible gift of making people feel seen, heard, and valued. When someone is having a tough day, you somehow know exactly what to say or do to make them feel better.</p>
-        <p>Your creativity is absolutely amazing! Whether you're drawing, building something with blocks, telling stories, or coming up with imaginative games, you see possibilities where others see ordinary things. Your mind works in such wonderful, unique ways that inspire everyone around you.</p>
-        <p>You're incredibly brave, even when you don't realize it. You try new things, ask important questions, stand up for what's right, and face challenges with a determination that amazes me. Your courage isn't about not being scared - it's about being scared and doing the right thing anyway.</p>
-        <p>Your sense of humor is absolutely delightful! You find joy in the silliest things and your giggles are contagious. You have this wonderful ability to make ordinary moments feel special and fun, and your playful spirit brightens every day.</p>
-    </div>
-
-    <div id="favorites-content" class="content-area">
-        <h2>🎀 Things You Love</h2>
-        <p>Your favorite things paint a beautiful picture of who you are. I love how your face lights up when you talk about the books that take you on magical adventures, or how you get so excited about your favorite songs that you can't help but dance.</p>
-        <p>The way you care for your favorite stuffed animals and toys shows your nurturing heart. You give them names, create stories about their adventures, and make sure they're always safe and loved. It's one of the sweetest things about you.</p>
-        <p>Your favorite foods always seem to involve sharing - whether it's making pizza together, sharing ice cream, or having tea parties with your favorite cookies. You understand that the best things in life are even better when shared with people you love.</p>
-        <p>Your favorite activities often involve creating something beautiful, learning something new, or helping others. Whether it's art projects, building amazing structures, reading stories, or helping in the garden, you approach everything with such enthusiasm and care.</p>
-    </div>
-
-    <div id="photos-content" class="content-area">
-        <h2>🖼️ Photo Gallery</h2>
-        <p>Each picture tells a story of joy, growth, and beautiful moments. From candid shots of you being your wonderful, authentic self, to special occasion photos that capture milestones and celebrations, every image is a window into the happiness you bring to life.</p>
-        <p>Some photos show your silly side - the ones where you're making funny faces or caught in the middle of an uncontrollable giggle fit. Others capture you in moments of concentration, working on a project or reading a beloved book. And then there are the photos that show your gentle, caring nature - helping others or showing love to pets and toys.</p>
-        <div class="image-grid">
-            <div class="image-placeholder">🌸</div>
-            <div class="image-placeholder">🦋</div>
-            <div class="image-placeholder">🌻</div>
-            <div class="image-placeholder">🐝</div>
-            <div class="image-placeholder">🎨</div>
-            <div class="image-placeholder">📚</div>
-            <div class="image-placeholder">🎵</div>
-            <div class="image-placeholder">⭐</div>
-        </div>
-    </div>
-
-    <div id="message-content" class="content-area">
-        <h2>💌 A Special Message</h2>
-        <p>Thank you for being such an incredible person in my life. Your presence is like sunshine on a cloudy day, and your friendship is one of my most treasured gifts. You have this amazing ability to make everyone around you feel special and loved, and I hope you know just how special and loved you are too.</p>
-        <p>Watching you grow and discover new things about yourself and the world fills me with so much pride and joy. You approach life with such courage, curiosity, and kindness that you inspire me to be a better person every single day.</p>
-        <p>Remember that no matter where life takes you, no matter how big you grow, and no matter what challenges you face, you are deeply loved and believed in. You have everything inside you to achieve your dreams and make a positive impact on this world.</p>
-        <p>Keep being your wonderful, authentic self. Keep asking questions, keep trying new things, keep being kind to others, and keep that beautiful smile shining bright. The world is so much better with you in it, and I'm so grateful to be part of your journey.</p>
-        <p>With all my love and endless hugs,<br>Someone who thinks you're absolutely amazing! 💕</p>
-    </div>
-
-    <script>
-        // Enhanced theme toggle with smooth animations
-        function toggleTheme() {
-            document.body.classList.toggle('dark');
-            localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
-            
-            // Add sparkle effect on toggle
-            createSparkles();
-        }
-
-        // Create sparkle effect
-        function createSparkles() {
-            for (let i = 0; i < 15; i++) {
-                const sparkle = document.createElement('div');
-                sparkle.className = 'sparkle';
-                sparkle.style.left = Math.random() * window.innerWidth + 'px';
-                sparkle.style.top = Math.random() * window.innerHeight + 'px';
-                sparkle.style.animationDelay = Math.random() * 1 + 's';
-                document.body.appendChild(sparkle);
-                
-                setTimeout(() => sparkle.remove(), 1500);
-            }
-        }
-
-        // Enhanced content switching with better animations
-        function showContent(section) {
-            const contentAreas = document.querySelectorAll('.content-area');
-            const dashboardCards = document.querySelectorAll('.dashboard-card');
-
-            // Remove active classes
-            contentAreas.forEach(content => {
-                content.classList.remove('active');
-                setTimeout(() => content.style.display = 'none', 300);
-            });
-            
-            dashboardCards.forEach(card => card.classList.remove('active'));
-
-            // Add active classes to selected elements
-            const targetContent = document.getElementById(section + '-content');
-            const targetCard = document.querySelector(`[onclick="showContent('${section}')"]`);
-
-            if (targetContent) {
-                setTimeout(() => {
-                    targetContent.style.display = 'block';
-                    setTimeout(() => targetContent.classList.add('active'), 50);
-                }, 300);
-            }
-            
-            if (targetCard) {
-                targetCard.classList.add('active');
-                createHeartEffect(targetCard);
-            }
-
-            // Update navigation buttons
-            const navButtons = document.querySelectorAll('.nav-btn');
-            navButtons.forEach(btn => btn.classList.remove('active'));
-
-            const activeNavBtn = document.querySelector(`[onclick*="${section}"].nav-btn`);
-            if (activeNavBtn) {
-                activeNavBtn.classList.add('active');
-            }
-        }
-
-        // Create floating heart effect
-        function createHeartEffect(element) {
-            const rect = element.getBoundingClientRect();
-            const heart = document.createElement('div');
-            heart.className = 'heart-float';
-            heart.textContent = '💖';
-            heart.style.left = (rect.left + rect.width / 2) + 'px';
-            heart.style.top = (rect.top + rect.height / 2) + 'px';
-            document.body.appendChild(heart);
-            
-            setTimeout(() => heart.remove(), 3000);
-        }
-
-        // Create enhanced navigation with icons
-        function createNavigation() {
-            const dashboard = document.querySelector('.dashboard');
-            const nav = document.createElement('div');
-            nav.className = 'nav-buttons';
-            nav.innerHTML = `
-                <button class="nav-btn" onclick="showContent('about')">✨ About</button>
-                <button class="nav-btn" onclick="showContent('memories')">📸 Memories</button>
-                <button class="nav-btn" onclick="showContent('qualities')">💖 Qualities</button>
-                <button class="nav-btn" onclick="showContent('favorites')">🎀 Favorites</button>
-                <button class="nav-btn" onclick="showContent('photos')">🖼️ Photos</button>
-                <button class="nav-btn" onclick="showContent('message')">💌 Message</button>
-            `;
-            dashboard.appendChild(nav);
-        }
-
-        // Add click effects to cards
-        function addClickEffects() {
-            const cards = document.querySelectorAll('.dashboard-card');
-            cards.forEach(card => {
-                card.addEventListener('click', function(e) {
-                    // Create ripple effect
-                    const ripple = document.createElement('div');
-                    const rect = this.getBoundingClientRect();
-                    const size = Math.max(rect.width, rect.height);
-                    const x = e.clientX - rect.left - size / 2;
-                    const y = e.clientY - rect.top - size / 2;
-                    
-                    ripple.style.cssText = `
-                        position: absolute;
-                        width: ${size}px;
-                        height: ${size}px;
-                        left: ${x}px;
-                        top: ${y}px;
-                        background: rgba(255, 255, 255, 0.3);
-                        border-radius: 50%;
-                        transform: scale(0);
-                        animation: ripple 0.6s ease-out;
-                        pointer-events: none;
-                    `;
-                    
-                    this.appendChild(ripple);
-                    setTimeout(() => ripple.remove(), 600);
-                });
-            });
-        }
-
-        // Add ripple animation to CSS
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes ripple {
-                to {
-                    transform: scale(2);
-                    opacity: 0;
-                }
-            }
-        `;
-        document.head.appendChild(style);
-
-        // Load saved theme
-        function loadTheme() {
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'dark') {
-                document.body.classList.add('dark');
-            }
-        }
-
-        // Add floating elements animation variety
-        function enhanceFloatingElements() {
-            const floatingElements = document.querySelectorAll('.floating-element');
-            floatingElements.forEach((element, index) => {
-                element.style.animationDuration = (4 + Math.random() * 4) + 's';
-                element.style.animationDelay = (Math.random() * 2) + 's';
-            });
-        }
-
-        // Initialize everything when DOM is loaded
-        document.addEventListener('DOMContentLoaded', () => {
-            loadTheme();
-            createNavigation();
-            addClickEffects();
-            enhanceFloatingElements();
-            showContent('about');
-            
-            // Add welcome sparkles
-            setTimeout(createSparkles, 500);
-        });
-
-        // Add keyboard navigation
-        document.addEventListener('keydown', (e) => {
-            const sections = ['about', 'memories', 'qualities', 'favorites', 'photos', 'message'];
-            const currentActive = document.querySelector('.nav-btn.active');
-            const currentIndex = sections.findIndex(section => 
-                currentActive && currentActive.onclick.toString().includes(section)
-            );
-            
-            if (e.key === 'ArrowRight' && currentIndex < sections.length - 1) {
-                showContent(sections[currentIndex + 1]);
-            } else if (e.key === 'ArrowLeft' && currentIndex > 0) {
-                showContent(sections[currentIndex - 1]);
-            } else if (e.key === 'Home') {
-                showContent('about');
-            } else if (e.key === 'End') {
-                showContent('message');
-            }
-        });
-
-        // Add smooth scroll behavior
-        document.documentElement.style.scrollBehavior = 'smooth';
-
-        // Add intersection observer for scroll animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, observerOptions);
-
-        // Add Easter egg - konami code
-        let konamiCode = [];
-        const konamiSequence = [
-            'ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown',
-            'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight',
-            'KeyB', 'KeyA'
-        ];
-
-        document.addEventListener('keydown', (e) => {
-            konamiCode.push(e.code);
-            if (konamiCode.length > konamiSequence.length) {
-                konamiCode.shift();
-            }
-            
-            if (konamiCode.join('') === konamiSequence.join('')) {
-                activateEasterEgg();
-                konamiCode = [];
-            }
-        });
-
-        function activateEasterEgg() {
-            // Create rainbow effect
-            document.body.style.animation = 'rainbow 2s infinite';
-            
-            // Add rainbow animation to CSS
-            const rainbowStyle = document.createElement('style');
-            rainbowStyle.textContent = `
-                @keyframes rainbow {
-                    0% { filter: hue-rotate(0deg); }
-                    100% { filter: hue-rotate(360deg); }
-                }
-            `;
-            document.head.appendChild(rainbowStyle);
-            
-            // Create celebration particles
-            for (let i = 0; i < 50; i++) {
-                setTimeout(() => {
-                    const particle = document.createElement('div');
-                    particle.textContent = ['🎉', '🎊', '⭐', '✨', '🌟'][Math.floor(Math.random() * 5)];
-                    particle.style.cssText = `
-                        position: fixed;
-                        font-size: 2rem;
-                        left: ${Math.random() * 100}vw;
-                        top: -50px;
-                        pointer-events: none;
-                        z-index: 1000;
-                        animation: fall 3s ease-in forwards;
-                    `;
-                    document.body.appendChild(particle);
-                    
-                    setTimeout(() => particle.remove(), 3000);
-                }, i * 50);
-            }
-            
-            // Add fall animation
-            const fallStyle = document.createElement('style');
-            fallStyle.textContent = `
-                @keyframes fall {
-                    to {
-                        transform: translateY(100vh) rotate(360deg);
-                        opacity: 0;
-                    }
-                }
-            `;
-            document.head.appendChild(fallStyle);
-            
-            // Remove rainbow effect after celebration
-            setTimeout(() => {
-                document.body.style.animation = '';
-                rainbowStyle.remove();
-                fallStyle.remove();
-            }, 5000);
-        }
-
-        // Add mouse trail effect
-        let mouseTrail = [];
-        document.addEventListener('mousemove', (e) => {
-            if (mouseTrail.length > 10) {
-                const oldTrail = mouseTrail.shift();
-                oldTrail.remove();
-            }
-            
-            const trail = document.createElement('div');
-            trail.style.cssText = `
-                position: fixed;
-                width: 8px;
-                height: 8px;
-                background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, transparent 70%);
-                border-radius: 50%;
-                pointer-events: none;
-                z-index: 9999;
-                left: ${e.clientX - 4}px;
-                top: ${e.clientY - 4}px;
-                animation: fadeTrail 0.5s ease-out forwards;
-            `;
-            
-            document.body.appendChild(trail);
-            mouseTrail.push(trail);
-        });
         
-        // Add fade trail animation
-        const trailStyle = document.createElement('style');
-        trailStyle.textContent = `
-            @keyframes fadeTrail {
-                0% { opacity: 0.8; transform: scale(1); }
-                100% { opacity: 0; transform: scale(0.5); }
-            }
-        `;
-        document.head.appendChild(trailStyle);
-    </script>
+        .sidebar-nav {
+            position: relative;
+            top: auto;
+            display: flex;
+            overflow-x: auto;
+            padding: 1rem;
+            gap: 1rem;
+            white-space: nowrap;
+        }
+        
+        .nav-title {
+            display: none;
+        }
+        
+        .nav-item {
+            flex-shrink: 0;
+            margin-bottom: 0;
+            padding: 0.8rem;
+        }
+        
+        .nav-text {
+            display: none;
+        }
+        
+        .nav-icon {
+            margin-right: 0;
+        }
+        
+        .header {
+            padding: 1rem;
+        }
+        
+        .header h1 {
+            font-size: 2rem;
+        }
+        
+        .content-section {
+            padding: 2rem;
+        }
+    }
+
+    /* Special Effects */
+    .sparkle {
+        position: absolute;
+        width: 6px;
+        height: 6px;
+        background: #fff;
+        border-radius: 50%;
+        animation: sparkle 1.5s ease-in-out infinite;
+    }
+
+    @keyframes sparkle {
+        0%, 100% { opacity: 0; transform: scale(0); }
+        50% { opacity: 1; transform: scale(1); }
+    }
+
+    .heart-float {
+        position: fixed;
+        pointer-events: none;
+        font-size: 1.5rem;
+        color: #ff6b6b;
+        animation: heartFloat 3s ease-out forwards;
+        z-index: 1000;
+    }
+
+    @keyframes heartFloat {
+        0% {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        100% {
+            opacity: 0;
+            transform: translateY(-100px) scale(0.5);
+        }
+    }
+
+    @keyframes ripple {
+        to {
+            transform: scale(2);
+            opacity: 0;
+        }
+    }
+
+      .spotify-card {
+      margin-top: 2rem;
+      background: var(--card-light);
+      border-radius: 18px;
+      padding: 1.25rem;
+      box-shadow: var(--shadow-light);
+      backdrop-filter: blur(12px);
+      transition: all 0.4s ease;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 1s ease-out 0.3s forwards;
+    }
+
+    body.dark .spotify-card {
+      background: var(--card-dark);
+      box-shadow: var(--shadow-dark);
+    }
+
+    .spotify-heading {
+      text-align: center;
+      font-size: 1.1rem;
+      font-weight: bold;
+      margin-bottom: 0.8rem;
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .spotify-embed {
+      border-radius: 12px;
+      width: 100%;
+      height: 250px; /* Smaller height */
+    }
+
+    .clickable-photo {
+      width: 100%;
+      border-radius: 15px;
+      object-fit: cover;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+      animation: fadeInUp 0.8s ease-out;
+    }
+
+    .clickable-photo:hover {
+      transform: scale(1.05) rotate(1deg);
+    }
+
+    .fullscreen-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      display: none;
+    }
+
+    .fullscreen-overlay img {
+      max-width: 90%;
+      max-height: 90%;
+      border-radius: 10px;
+      box-shadow: 0 0 30px rgba(255,255,255,0.2);
+      animation: fadeInUp 0.4s ease-out;
+    }
+
+    .fullscreen-overlay.show {
+      display: flex;
+    }
+
+    .gallery-photo {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+        border-radius: 15px;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        animation: fadeInUp 0.8s ease-out;
+      }
+
+      .gallery-photo:hover {
+        transform: scale(1.03);
+      }
+
+      .image-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1.5rem;
+      }
+
+      /* Fullscreen Overlay */
+      .fullscreen-overlay {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        flex-direction: column;
+      }
+
+      .fullscreen-overlay.show {
+        display: flex;
+      }
+
+      .fullscreen-overlay img {
+        max-width: 90%;
+        max-height: 80%;
+        border-radius: 10px;
+        box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease;
+      }
+
+      /* Arrows */
+      .overlay-nav {
+        color: white;
+        font-size: 3rem;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        user-select: none;
+        z-index: 10000;
+      }
+
+      .overlay-nav.left { left: 30px; }
+      .overlay-nav.right { right: 30px; }
+
+      .overlay-nav:hover {
+        color: #ff6b6b;
+      }
+  </style>
+</head>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const images = Array.from(document.querySelectorAll('.gallery-photo'));
+    const overlay = document.createElement('div');
+    overlay.className = 'fullscreen-overlay';
+    overlay.innerHTML = `
+      <span class="overlay-nav left">&#10094;</span>
+      <img src="" alt="Fullscreen Image" />
+      <span class="overlay-nav right">&#10095;</span>
+    `;
+    document.body.appendChild(overlay);
+
+    const overlayImg = overlay.querySelector('img');
+    let currentIndex = 0;
+
+    function showImage(index) {
+      if (index < 0 || index >= images.length) return;
+      overlayImg.src = images[index].src;
+      currentIndex = index;
+      overlay.classList.add('show');
+    }
+
+    images.forEach((img, index) => {
+      img.addEventListener('click', () => showImage(index));
+    });
+
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay || e.target === overlayImg) {
+        overlay.classList.remove('show');
+      }
+    });
+
+    overlay.querySelector('.left').addEventListener('click', (e) => {
+      e.stopPropagation();
+      showImage((currentIndex - 1 + images.length) % images.length);
+    });
+
+    overlay.querySelector('.right').addEventListener('click', (e) => {
+      e.stopPropagation();
+      showImage((currentIndex + 1) % images.length);
+    });
+  });
+
+    const countdownDates = [
+    { label: "The Day We Met", date: "2025-06-14" },
+    { label: "Your Birthday", date: "2025-09-06" },
+    { label: "Our Next Meetup", date: "3000-30-30" }
+  ];
+
+  function updateClock() {
+    const now = new Date();
+    document.getElementById("current-time").textContent = now.toLocaleTimeString();
+  }
+
+  function updateCountdowns() {
+    const now = new Date();
+    const list = document.getElementById("countdown-list");
+    list.innerHTML = '';
+
+    countdownDates.forEach(item => {
+      const target = new Date(item.date);
+      const diffTime = target - now;
+      const days = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+      const li = document.createElement('li');
+
+      let message = '';
+      if (days > 0) {
+        message = `<span style="color: var(--text-dark); font-weight: bold;">${days}</span> day(s) left`;
+      } else if (days === 0) {
+        message = `<span style="color: var(--text-dark); font-weight: bold;">Today!</span>`;
+      } else {
+        message = `<span style="color: var(--text-dark); font-weight: bold;">${Math.abs(days)}</span> day(s) ago`;
+      }
+
+      li.innerHTML = `📌 <strong>${item.label}</strong> — ${message}`;
+      list.appendChild(li);
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    updateClock();
+    updateCountdowns();
+    setInterval(updateClock, 1000);
+    setInterval(updateCountdowns, 60 * 1000);
+  });
+</script>
+
+
+<body>
+  <!-- Progress Bar -->
+  <div class="progress-bar"></div>
+
+  <!-- Floating emojis -->
+  <div class="floating-element">🌸</div>
+  <div class="floating-element">🌺</div>
+  <div class="floating-element">🌷</div>
+  <div class="floating-element">✨</div>
+
+  <!-- Header -->
+  <div class="header">
+    <div></div>
+    <div class="header-content">
+      <h1>Tiny Human's Special Dashboard 🧚‍♀️</h1>
+      <p>Made with love for my favorite pocket-sized person</p>
+    </div>
+    <div class="theme-toggle" onclick="toggleTheme()">
+      <div class="toggle-slider"></div>
+    </div>
+  </div>
+
+  <!-- Main Container -->
+  <div class="main-container">
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar-nav">
+      <div class="nav-title">Navigation</div>
+      <div class="nav-item active" onclick="showContent('about')">
+        <span class="nav-icon">✨</span>
+        <span class="nav-text">About You</span>
+      </div>
+      <div class="nav-item" onclick="showContent('memories')">
+        <span class="nav-icon">📸</span>
+        <span class="nav-text">Our Memories</span>
+      </div>
+      <div class="nav-item" onclick="showContent('qualities')">
+        <span class="nav-icon">💖</span>
+        <span class="nav-text">Your Qualities</span>
+      </div>
+      <div class="nav-item" onclick="showContent('favorites')">
+        <span class="nav-icon">🎀</span>
+        <span class="nav-text">Your Favorites</span>
+      </div>
+      <div class="nav-item" onclick="showContent('photos')">
+        <span class="nav-icon">🖼️</span>
+        <span class="nav-text">Photo Gallery</span>
+      </div>
+      <div class="nav-item" onclick="showContent('calendar')">
+      <span class="nav-icon">⏳</span>
+      <span class="nav-text">Calendar</span>
+    </div>
+      <div class="nav-item" onclick="showContent('message')">
+        <span class="nav-icon">💌</span>
+        <span class="nav-text">Special Message</span>
+      </div>
+    </nav>
+
+    <!-- Content Container -->
+    <div class="content-container">
+      <section id="about-section" class="content-section active visible">
+        <h2>✨ About You</h2>
+        <p>You are an extraordinary person who brings light to every room you enter. Your smile has the power to brighten even the cloudiest days, and your laugh is like music that makes everyone around you feel instantly happier.</p>
+        <p>There's something magical about the way you see the world - with wonder, curiosity, and endless optimism. You have this incredible ability to find joy in the smallest things, whether it's a beautiful sunset, a funny joke, or spending time with people you care about.</p>
+        <p>Your energy is contagious, and your kind heart touches everyone you meet. You're not just tiny in stature - you're mighty in spirit, and that's what makes you absolutely wonderful.</p>
+      </section>
+
+      <section id="memories-section" class="content-section hidden">
+        <h2>📸 Our Memories</h2>
+        <p>Each memory we've shared is like a beautiful photograph in the album of our friendship. From spontaneous adventures to quiet moments of laughter, every experience has been a treasure.</p>
+        <ul class="content-list">
+          <li>🎈 That time when i overthought and you handled me</li>
+          <li>🍰 Late-night conversations that lasted until sunrise</li>
+          <li>🎭 Your incredible talent for making ordinary moments feel extraordinary</li>
+          <li>🌟 The way you always know exactly what to say to make everything better</li>
+          <li>🎵 Dance parties in the kitchen while cooking together!! to be done tho</li>
+          <li>🌈 The countless times you've made me laugh until I cried</li>
+          <li>💌 The way you always know when I need a little pick me up</li>
+        </ul>
+        <p>These moments aren't just memories - they're proof of how amazing it is to have you in my life.</p>
+      </section>
+
+      <section id="qualities-section" class="content-section hidden">
+        <h2>💖 Your Amazing Qualities</h2>
+        <p>Where do I even begin? You have so many wonderful qualities that make you absolutely incredible:</p>
+        <ul class="content-list">
+          <li>💫 Your boundless creativity that turns ordinary ideas into something magical</li>
+          <li>🌈 Your compassionate heart that always puts others first</li>
+          <li>⚡ Your incredible strength, even when you don't think you're being strong</li>
+          <li>🎨 Your unique perspective that sees beauty everywhere</li>
+          <li>🌟 Your infectious enthusiasm that makes everything more fun</li>
+          <li>💝 Your loyalty and the way you always show up for the people you love</li>
+          <li>🦋 Your gentle spirit that makes everyone feel safe and welcome</li>
+          <li>🌼 Your ability to find joy in the little things</li>
+          <li>🌻 Your unwavering support and encouragement for those around you</li>
+          <li>🦋 Your abilities to uplift others and bring out the best in them</li>
+          <li>🌟 Your resilience, bouncing back from challenges with grace and strength</li>
+        </ul>
+        <p> </p>
+        <p> i swear i will keep typing more things in this rate...</p>
+        <p>You're like a rare butterfly - delicate yet resilient, beautiful in every way, and absolutely one of a kind.</p>
+      </section>
+
+      <section id="favorites-section" class="content-section hidden">
+        <h2>🎀 Things You Love</h2>
+        <p>Your favorite things paint a beautiful picture of who you are, someone who appreciates life's simple pleasures and finds magic in everyday moments:</p>
+        <ul class="content-list">
+          <li>🌸 Flowers and a lot, she sends it daily!!</li>
+          <li>📚 Getting lost in a good book with a cup of cofffeee</li>
+          <li>🎵 Music that makes you want to dance around the room or in rain</li>
+          <li>🌅 she loves night and a lot</li>
+          <li>🍓 Sweet treats and the joy of sharing them with friends</li>
+          <li>🎨 Creating something beautiful with your own hands</li>
+          <li>🐾 Cute animals that make you smile instantly</li>
+          <li>⭐ Stargazing and wondering about all the possibilities out there</li>
+          <li>💧 The calming sound of rain and the cozy feeling it brings</li>
+          <li>🍳 Cooking and experimenting with new recipes</li>
+          <li>📞 Calling friends and family just to say hi</li>
+        </ul>
+        <div class="spotify-card">
+          <p class="spotify-heading">💘 Your favorite tune – “Valentine”</p>
+          <iframe 
+            src="https://open.spotify.com/embed/track/6cx5CvFhqN19efStehJqoW?utm_source=generator" 
+            frameborder="0" 
+            allowfullscreen 
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+            loading="lazy"
+            class="spotify-embed">
+          </iframe>
+        </div>
+
+        <p>Each of these favorites shows your appreciation for beauty, connection, and the wonder of being alive.</p>
+      </section>
+
+      <section id="photos-section" class="content-section hidden">
+        <h2>🖼️ Photo Gallery</h2>
+        <p>A collection of moments that capture your beautiful spirit and all the joy you bring to the world:</p>
+        <div class="image-grid" id="gallery">
+          <img src="images/meeting.png" alt="Photo 1" class="gallery-photo" />
+          <img src="images/matchingsong.jpg" alt="Photo 2" class="gallery-photo" />
+          <img src="images/grr.jpg" alt="Photo 3" class="gallery-photo" />
+        </div>
+        <p></p>
+        <p>Every picture tells a story of happiness, adventure, and the incredible light you bring to every moment. These aren't just photos - they're captured pieces of pure joy.</p>
+      </section>
+
+      <section id="calendar-section" class="content-section hidden">
+        <h2>🗓️ Special Moments</h2>
+        <p>Here are some lovely dates we’re holding close to our hearts:</p>
+
+        <div id="live-clock" style="text-align: center; font-size: 1.5rem; margin-bottom: 2rem;">
+          ⏰ Time now: <span id="current-time">--:--:--</span>
+        </div>
+
+        <ul class="content-list" id="countdown-list">
+          <!-- Countdown items will be injected here -->
+        </ul>
+      </section>
+
+      <section id="message-section" class="content-section hidden">
+        <h2>💌 A Special Message Just For You</h2>
+        <p>Dear tiny human with the enormous heart,</p>
+        <p>There aren't enough words in any language to express how grateful I am to have you in my life. You've shown me that the best things really do come in small packages, and that true strength isn't about size - it's about the courage to be authentically yourself.</p>
+        <p>You've taught me to notice the little miracles that happen every day, to laugh more freely, and to approach life with the same wonder and enthusiasm that you bring to everything you do. Your presence is a gift that keeps on giving.</p>
+        <p>On days when you forget how amazing you are, I hope you'll remember this: You are loved beyond measure, appreciated more than you know, and valued for exactly who you are. You don't need to be anything other than your wonderful, authentic self.</p>
+        <p>Thank you for being the incredible person you are. The world is brighter because you're in it, and my life is infinitely better because you're part of it.</p>
+        <p>With all my love and endless appreciation,<br>Your biggest fan 💕</p>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    let currentTheme = 'light';
+
+    function toggleTheme() {
+      currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+      document.body.classList.toggle('dark');
+      createSparkles();
+    }
+
+    function createSparkles() {
+      for (let i = 0; i < 6; i++) {
+        const sparkle = document.createElement('div');
+        sparkle.className = 'sparkle';
+        sparkle.style.left = Math.random() * window.innerWidth + 'px';
+        sparkle.style.top = Math.random() * window.innerHeight + 'px';
+        sparkle.style.animationDelay = Math.random() + 's';
+        document.body.appendChild(sparkle);
+        setTimeout(() => sparkle.remove(), 1500);
+      }
+    }
+
+    function showContent(section) {
+      const contentAreas = document.querySelectorAll('.content-section');
+      const navItems = document.querySelectorAll('.nav-item');
+
+      // Hide all sections
+      contentAreas.forEach(sec => {
+        sec.classList.remove('active', 'visible');
+        sec.classList.add('hidden');
+      });
+
+      // Remove active state from all nav items
+      navItems.forEach(item => item.classList.remove('active'));
+
+      // Show target section
+      const target = document.getElementById(`${section}-section`);
+      if (target) {
+        target.classList.remove('hidden');
+        setTimeout(() => {
+          target.classList.add('active', 'visible');
+        }, 50);
+      }
+
+      // Add active state to clicked nav item
+      const activeNav = document.querySelector(`.nav-item[onclick="showContent('${section}')"]`);
+      if (activeNav) {
+        activeNav.classList.add('active');
+        createHeartEffect(activeNav);
+      }
+    }
+
+    function createHeartEffect(element) {
+      const emojis = ['💖', '💗', '💘', '💞', '💕', '❤️', '🩷'];
+      const heart = document.createElement('div');
+      heart.className = 'heart-float';
+      heart.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      const { left, top, width, height } = element.getBoundingClientRect();
+      heart.style.left = left + width / 2 + 'px';
+      heart.style.top = top + height / 2 + 'px';
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 3000);
+    }
+
+    function updateProgressBar() {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const progress = (scrollTop / scrollHeight) * 100;
+      document.querySelector('.progress-bar').style.width = progress + '%';
+    }
+
+    function enhanceFloatingElements() {
+      const elements = document.querySelectorAll('.floating-element');
+      elements.forEach(el => {
+        el.style.animationDuration = (4 + Math.random() * 4) + 's';
+        el.style.animationDelay = (Math.random() * 2) + 's';
+      });
+    }
+
+    // Event listeners
+    window.addEventListener('scroll', updateProgressBar);
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.body.classList.add('dark');
+      currentTheme = 'dark'; 
+
+      enhanceFloatingElements();
+      showContent('about');
+      setTimeout(createSparkles, 500);
+    });
+  </script>
 </body>
 </html>
