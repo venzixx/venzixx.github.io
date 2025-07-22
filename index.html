@@ -5,807 +5,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tiny Human's Dashboard 💕</title>
-  <style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-
-    :root {
-        --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-        --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-        --warm-gradient: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
-        --bg-light: #fafbfc;
-        --bg-dark: #0f0f23;
-        --card-light: rgba(255, 255, 255, 0.9);
-        --card-dark: rgba(30, 30, 60, 0.9);
-        --text-light: #2d3748;
-        --text-dark: #e2e8f0;
-        --shadow-light: 0 10px 30px rgba(0, 0, 0, 0.1);
-        --shadow-dark: 0 10px 30px rgba(0, 0, 0, 0.3);
-    }
-
-    body {
-        font-family: 'Arial', sans-serif;
-        background: var(--bg-light);
-        color: var(--text-light);
-        min-height: 100vh;
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        overflow-x: hidden;
-        position: relative;
-        scroll-behavior: smooth;
-    }
-
-    body::before {
-        content: '';
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: 
-            radial-gradient(circle at 20% 80%, rgba(102, 126, 234, 0.1) 0%, transparent 50%),
-            radial-gradient(circle at 80% 20%, rgba(245, 87, 108, 0.1) 0%, transparent 50%),
-            radial-gradient(circle at 40% 40%, rgba(79, 172, 254, 0.05) 0%, transparent 50%);
-        pointer-events: none;
-        z-index: -1;
-    }
-
-    body.dark {
-        background: var(--bg-dark);
-        color: var(--text-dark);
-    }
-
-    body.dark::before {
-        background: 
-            radial-gradient(circle at 20% 80%, rgba(102, 126, 234, 0.05) 0%, transparent 50%),
-            radial-gradient(circle at 80% 20%, rgba(245, 87, 108, 0.05) 0%, transparent 50%),
-            radial-gradient(circle at 40% 40%, rgba(79, 172, 254, 0.03) 0%, transparent 50%);
-    }
-
-    .hidden {
-        display: none;
-    }
-
-    /* Floating Elements */
-    .floating-element {
-        position: fixed;
-        font-size: 2rem;
-        opacity: 0.6;
-        animation: float 6s ease-in-out infinite;
-        pointer-events: none;
-        z-index: 1;
-    }
-
-    .floating-element:nth-child(1) {
-        top: 20%;
-        left: 10%;
-        animation-delay: 0s;
-    }
-
-    .floating-element:nth-child(2) {
-        top: 60%;
-        right: 15%;
-        animation-delay: 2s;
-    }
-
-    .floating-element:nth-child(3) {
-        top: 40%;
-        left: 80%;
-        animation-delay: 4s;
-    }
-
-    .floating-element:nth-child(4) {
-        top: 80%;
-        left: 20%;
-        animation-delay: 1s;
-    }
-
-    @keyframes float {
-        0%, 100% { transform: translateY(0px) rotate(0deg); }
-        25% { transform: translateY(-20px) rotate(5deg); }
-        50% { transform: translateY(-10px) rotate(-5deg); }
-        75% { transform: translateY(-15px) rotate(3deg); }
-    }
-
-    /* Header */
-    .header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 2rem;
-        backdrop-filter: blur(20px);
-        background: rgba(255, 255, 255, 0.1);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-        position: sticky;
-        top: 0;
-        z-index: 100;
-    }
-
-    .header-content {
-        text-align: center;
-        flex-grow: 1;
-    }
-
-    .header h1 {
-        font-size: 2.5rem;
-        background: var(--primary-gradient);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        margin-bottom: 0.5rem;
-        animation: shimmer 3s ease-in-out infinite;
-    }
-
-    @keyframes shimmer {
-        0%, 100% { filter: hue-rotate(0deg); }
-        50% { filter: hue-rotate(20deg); }
-    }
-
-    .header p {
-        font-size: 1.1rem;
-        opacity: 0.8;
-    }
-
-    /* Theme Toggle */
-    .theme-toggle {
-        width: 60px;
-        height: 30px;
-        background: var(--primary-gradient);
-        border-radius: 25px;
-        position: relative;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-
-    .toggle-slider {
-        width: 26px;
-        height: 26px;
-        background: white;
-        border-radius: 50%;
-        position: absolute;
-        top: 2px;
-        left: 2px;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    }
-
-    body.dark .toggle-slider {
-        transform: translateX(30px);
-        background: #2d3748;
-    }
-
-    /* Main Container */
-    .main-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 2rem;
-        display: grid;
-        grid-template-columns: 250px 1fr;
-        gap: 2rem;
-        align-items: start;
-    }
-
-    /* Sidebar Navigation */
-    .sidebar-nav {
-        position: sticky;
-        top: 120px;
-        background: var(--card-light);
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        border-radius: 20px;
-        padding: 1.5rem;
-        box-shadow: var(--shadow-light);
-        height: fit-content;
-        animation: slideInLeft 0.8s ease-out;
-    }
-
-    body.dark .sidebar-nav {
-        background: var(--card-dark);
-        border-color: rgba(255, 255, 255, 0.1);
-        box-shadow: var(--shadow-dark);
-    }
-
-    .nav-title {
-        font-size: 1.2rem;
-        font-weight: bold;
-        text-align: center;
-        margin-bottom: 1.5rem;
-        background: var(--primary-gradient);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
-
-    .nav-item {
-        display: flex;
-        align-items: center;
-        padding: 1rem;
-        margin-bottom: 0.5rem;
-        border-radius: 15px;
-        cursor: pointer;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        position: relative;
-        overflow: hidden;
-    }
-
-    .nav-item::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-        transition: left 0.5s;
-    }
-
-    .nav-item:hover::before {
-        left: 100%;
-    }
-
-    .nav-item:hover {
-        transform: translateX(5px);
-        background: rgba(255, 255, 255, 0.1);
-    }
-
-    .nav-item.active {
-        background: var(--primary-gradient);
-        color: white;
-        transform: translateX(5px);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    }
-
-    .nav-icon {
-        font-size: 1.5rem;
-        margin-right: 0.8rem;
-        transition: transform 0.3s ease;
-    }
-
-    .nav-item:hover .nav-icon {
-        transform: scale(1.2);
-    }
-
-    .nav-text {
-        font-weight: 500;
-        font-size: 0.95rem;
-    }
-
-    /* Content Area */
-    .content-container {
-        min-height: 100vh;
-    }
-
-    .content-section {
-        background: var(--card-light);
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        border-radius: 25px;
-        padding: 3rem;
-        box-shadow: var(--shadow-light);
-        margin-bottom: 2rem;
-        opacity: 0;
-        transform: translateY(50px);
-        transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    body.dark .content-section {
-        background: var(--card-dark);
-        border-color: rgba(255, 255, 255, 0.1);
-        box-shadow: var(--shadow-dark);
-    }
-
-    .content-section.visible {
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-    .content-section.active {
-        animation: slideInRight 0.8s ease-out;
-    }
-
-    .content-section h2 {
-        font-size: 2.5rem;
-        margin-bottom: 2rem;
-        background: var(--warm-gradient);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        text-align: center;
-        animation: fadeInUp 0.8s ease-out 0.2s both;
-    }
-
-    .content-section p {
-        font-size: 1.1rem;
-        line-height: 1.8;
-        margin-bottom: 1.5rem;
-        text-align: justify;
-        animation: fadeInUp 0.8s ease-out 0.4s both;
-    }
-
-    .content-list {
-        list-style: none;
-        padding: 0;
-    }
-
-    .content-list li {
-        background: rgba(255, 255, 255, 0.1);
-        margin: 0.5rem 0;
-        padding: 1rem;
-        border-radius: 15px;
-        border-left: 4px solid;
-        border-image: var(--primary-gradient) 1;
-        animation: fadeInUp 0.8s ease-out 0.6s both;
-    }
-
-    /* Image Grid */
-    .image-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        gap: 1.5rem;
-        margin-top: 2rem;
-    }
-
-    .image-placeholder {
-        aspect-ratio: 1;
-        background: var(--accent-gradient);
-        border-radius: 15px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 3rem;
-        color: white;
-        transition: all 0.3s ease;
-        cursor: pointer;
-        animation: fadeInUp 0.8s ease-out 0.6s both;
-    }
-
-    .image-placeholder:hover {
-        transform: scale(1.05) rotate(2deg);
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-    }
-
-    /* Animations */
-    @keyframes slideInLeft {
-        from {
-            opacity: 0;
-            transform: translateX(-50px);
-        }
-        to {
-            opacity: 1;
-            transform: translateX(0);
-        }
-    }
-
-    @keyframes slideInRight {
-        from {
-            opacity: 0;
-            transform: translateX(50px);
-        }
-        to {
-            opacity: 1;
-            transform: translateX(0);
-        }
-    }
-
-    @keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY(30px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    /* Scroll Progress Indicator */
-    .progress-bar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 0%;
-        height: 4px;
-        background: var(--primary-gradient);
-        z-index: 1000;
-        transition: width 0.3s ease;
-    }
-
-    /* Responsive Design */
-    @media (max-width: 768px) {
-        .main-container {
-            grid-template-columns: 1fr;
-            gap: 1rem;
-            padding: 1rem;
-        }
-        
-        .sidebar-nav {
-            position: relative;
-            top: auto;
-            display: flex;
-            overflow-x: auto;
-            padding: 1rem;
-            gap: 1rem;
-            white-space: nowrap;
-        }
-        
-        .nav-title {
-            display: none;
-        }
-        
-        .nav-item {
-            flex-shrink: 0;
-            margin-bottom: 0;
-            padding: 0.8rem;
-        }
-        
-        .nav-text {
-            display: none;
-        }
-        
-        .nav-icon {
-            margin-right: 0;
-        }
-        
-        .header {
-            padding: 1rem;
-        }
-        
-        .header h1 {
-            font-size: 2rem;
-        }
-        
-        .content-section {
-            padding: 2rem;
-        }
-    }
-
-    /* Special Effects */
-    .sparkle {
-        position: absolute;
-        width: 6px;
-        height: 6px;
-        background: #fff;
-        border-radius: 50%;
-        animation: sparkle 1.5s ease-in-out infinite;
-    }
-
-    @keyframes sparkle {
-        0%, 100% { opacity: 0; transform: scale(0); }
-        50% { opacity: 1; transform: scale(1); }
-    }
-
-    .heart-float {
-        position: fixed;
-        pointer-events: none;
-        font-size: 1.5rem;
-        color: #ff6b6b;
-        animation: heartFloat 3s ease-out forwards;
-        z-index: 1000;
-    }
-
-    @keyframes heartFloat {
-        0% {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
-        100% {
-            opacity: 0;
-            transform: translateY(-100px) scale(0.5);
-        }
-    }
-
-    @keyframes ripple {
-        to {
-            transform: scale(2);
-            opacity: 0;
-        }
-    }
-
-      .spotify-card {
-      margin-top: 2rem;
-      background: var(--card-light);
-      border-radius: 18px;
-      padding: 1.25rem;
-      box-shadow: var(--shadow-light);
-      backdrop-filter: blur(12px);
-      transition: all 0.4s ease;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeInUp 1s ease-out 0.3s forwards;
-    }
-
-    body.dark .spotify-card {
-      background: var(--card-dark);
-      box-shadow: var(--shadow-dark);
-    }
-
-    .spotify-heading {
-      text-align: center;
-      font-size: 1.1rem;
-      font-weight: bold;
-      margin-bottom: 0.8rem;
-      background: var(--accent-gradient);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .spotify-embed {
-      border-radius: 12px;
-      width: 100%;
-      height: 250px; /* Smaller height */
-    }
-
-    .clickable-photo {
-      width: 100%;
-      border-radius: 15px;
-      object-fit: cover;
-      cursor: pointer;
-      transition: transform 0.3s ease;
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-      animation: fadeInUp 0.8s ease-out;
-    }
-
-    .clickable-photo:hover {
-      transform: scale(1.05) rotate(1deg);
-    }
-
-    .fullscreen-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.9);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-      display: none;
-    }
-
-    .fullscreen-overlay img {
-      max-width: 90%;
-      max-height: 90%;
-      border-radius: 10px;
-      box-shadow: 0 0 30px rgba(255,255,255,0.2);
-      animation: fadeInUp 0.4s ease-out;
-    }
-
-    .fullscreen-overlay.show {
-      display: flex;
-    }
-
-    .gallery-photo {
-        width: 100%;
-        height: 180px;
-        object-fit: cover;
-        border-radius: 15px;
-        cursor: pointer;
-        transition: transform 0.3s ease;
-        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-        animation: fadeInUp 0.8s ease-out;
-      }
-
-      .gallery-photo:hover {
-        transform: scale(1.03);
-      }
-
-      .image-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-        gap: 1.5rem;
-      }
-
-      /* Fullscreen Overlay */
-      .fullscreen-overlay {
-        position: fixed;
-        top: 0; left: 0;
-        width: 100%; height: 100%;
-        background: rgba(0, 0, 0, 0.9);
-        display: none;
-        align-items: center;
-        justify-content: center;
-        z-index: 9999;
-        flex-direction: column;
-      }
-
-      .fullscreen-overlay.show {
-        display: flex;
-      }
-
-      .fullscreen-overlay img {
-        max-width: 90%;
-        max-height: 80%;
-        border-radius: 10px;
-        box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
-        transition: all 0.3s ease;
-      }
-
-      /* Arrows */
-      .overlay-nav {
-        color: white;
-        font-size: 3rem;
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        cursor: pointer;
-        user-select: none;
-        z-index: 10000;
-      }
-
-      .overlay-nav.left { left: 30px; }
-      .overlay-nav.right { right: 30px; }
-
-      .overlay-nav:hover {
-        color: #ff6b6b;
-      }
-
-
-      .modal-overlay {
-        position: fixed;
-        top: 0; left: 0;
-        width: 100vw;
-        height: 100vh;
-        background: rgba(0, 0, 0, 0.6);
-        backdrop-filter: blur(6px);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 9999;
-      }
-      .modal-overlay.hidden {
-        display: none;
-      }
-
-      .modal-content {
-        background: var(--card-light);
-        color: var(--text-light);
-        padding: 2rem;
-        border-radius: 20px;
-        max-width: 500px;
-        width: 90%;
-        box-shadow: var(--shadow-light);
-        animation: popIn 0.3s ease;
-      }
-      body.dark .modal-content {
-        background: var(--card-dark);
-        color: var(--text-dark);
-        box-shadow: var(--shadow-dark);
-      }
-
-      .modal-content input,
-      .modal-content textarea {
-        padding: 0.75rem 1rem;
-        border-radius: 12px;
-        border: 1px solid rgba(255,255,255,0.2);
-        background: inherit;
-        color: inherit;
-        font-size: 1rem;
-      }
-
-      .modal-btn {
-        padding: 0.5rem 1.2rem;
-        border-radius: 25px;
-        border: none;
-        cursor: pointer;
-        font-weight: bold;
-        font-size: 1rem;
-      }
-      .modal-btn.cancel {
-        background: #999;
-        color: white;
-      }
-      .modal-btn.confirm {
-        background: var(--accent-gradient);
-        color: white;
-      }
-
-      @keyframes popIn {
-        0% { transform: scale(0.9); opacity: 0; }
-        100% { transform: scale(1); opacity: 1; }
-      }
-
-      .hidden {
-        display: none;
-      }
-
-  </style>
+  <link rel="stylesheet" href="styles.css">
 </head>
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const images = Array.from(document.querySelectorAll('.gallery-photo'));
-    const overlay = document.createElement('div');
-    overlay.className = 'fullscreen-overlay';
-    overlay.innerHTML = `
-      <span class="overlay-nav left">&#10094;</span>
-      <img src="" alt="Fullscreen Image" />
-      <span class="overlay-nav right">&#10095;</span>
-    `;
-    document.body.appendChild(overlay);
-
-    const overlayImg = overlay.querySelector('img');
-    let currentIndex = 0;
-
-    function showImage(index) {
-      if (index < 0 || index >= images.length) return;
-      overlayImg.src = images[index].src;
-      currentIndex = index;
-      overlay.classList.add('show');
-    }
-
-    images.forEach((img, index) => {
-      img.addEventListener('click', () => showImage(index));
-    });
-
-    overlay.addEventListener('click', (e) => {
-      if (e.target === overlay || e.target === overlayImg) {
-        overlay.classList.remove('show');
-      }
-    });
-
-    overlay.querySelector('.left').addEventListener('click', (e) => {
-      e.stopPropagation();
-      showImage((currentIndex - 1 + images.length) % images.length);
-    });
-
-    overlay.querySelector('.right').addEventListener('click', (e) => {
-      e.stopPropagation();
-      showImage((currentIndex + 1) % images.length);
-    });
-  });
-
-    const countdownDates = [
-    { label: "The Day We Met", date: "2025-06-14" },
-    { label: "Your Birthday", date: "2025-09-06" },
-    { label: "Our Next Meetup", date: "3000-30-30" }
-  ];
-
-  function updateClock() {
-    const now = new Date();
-    document.getElementById("current-time").textContent = now.toLocaleTimeString();
-  }
-
-  function updateCountdowns() {
-    const now = new Date();
-    const list = document.getElementById("countdown-list");
-    list.innerHTML = '';
-
-    countdownDates.forEach(item => {
-      const target = new Date(item.date);
-      const diffTime = target - now;
-      const days = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-
-      const li = document.createElement('li');
-
-      let message = '';
-      if (days > 0) {
-        message = `<span style="color: var(--text-dark); font-weight: bold;">${days}</span> day(s) left`;
-      } else if (days === 0) {
-        message = `<span style="color: var(--text-dark); font-weight: bold;">Today!</span>`;
-      } else {
-        message = `<span style="color: var(--text-dark); font-weight: bold;">${Math.abs(days)}</span> day(s) ago`;
-      }
-
-      li.innerHTML = `📌 <strong>${item.label}</strong> — ${message}`;
-      list.appendChild(li);
-    });
-  }
-
-  document.addEventListener('DOMContentLoaded', () => {
-    updateClock();
-    updateCountdowns();
-    setInterval(updateClock, 1000);
-    setInterval(updateCountdowns, 60 * 1000);
-  });
-</script>
 
 <div id="note-modal" class="modal-overlay hidden">
   <div class="modal-content">
-    <h3 style="margin-bottom: 1rem;">📖 Add a New Note</h3>
+    <h3>📖 Add a New Note</h3>
     <form id="note-form" style="display: flex; flex-direction: column; gap: 1rem;">
       <input type="text" id="note-title" placeholder="Title" required>
       <textarea id="note-body" placeholder="Write your poem, thought, or story here..." rows="6" required></textarea>
@@ -817,15 +22,10 @@
     </form>
   </div>
 </div>
+
 <body>
   <!-- Progress Bar -->
   <div class="progress-bar"></div>
-
-  <!-- Floating emojis -->
-  <div class="floating-element">🌸</div>
-  <div class="floating-element">🌺</div>
-  <div class="floating-element">🌷</div>
-  <div class="floating-element">✨</div>
 
   <!-- Header -->
   <div class="header">
@@ -865,22 +65,26 @@
         <span class="nav-text">Photo Gallery</span>
       </div>
       <div class="nav-item" onclick="showContent('calendar')">
-      <span class="nav-icon">⏳</span>
-      <span class="nav-text">Calendar</span>
-    </div>
+        <span class="nav-icon">⏳</span>
+        <span class="nav-text">Calendar</span>
+      </div>
       <div class="nav-item" onclick="showContent('message')">
         <span class="nav-icon">💌</span>
         <span class="nav-text">Special Message</span>
       </div>
-    <div class="nav-item" onclick="showContent('notes')">
-      <span class="nav-icon">📝</span>
-      <span class="nav-text">Notes</span>
-    </div>
+      <div class="nav-item" onclick="showContent('notes')">
+        <span class="nav-icon">📝</span>
+        <span class="nav-text">Notes</span>
+      </div>
+      <!-- <div class="nav-item" onclick="showContent('love')">
+        <span class="nav-icon">❤️</span>
+        <span class="nav-text">Love Taps</span>
+      </div> -->
     </nav>
 
     <!-- Content Container -->
     <div class="content-container">
-      <section id="about-section" class="content-section active visible">
+      <section id="about-section" class="content-section visible">
         <h2>✨ About You</h2>
         <p>You are an extraordinary person who brings light to every room you enter. Your smile has the power to brighten even the cloudiest days, and your laugh is like music that makes everyone around you feel instantly happier.</p>
         <p>There's something magical about the way you see the world - with wonder, curiosity, and endless optimism. You have this incredible ability to find joy in the smallest things, whether it's a beautiful sunset, a funny joke, or spending time with people you care about.</p>
@@ -918,8 +122,7 @@
           <li>🦋 Your abilities to uplift others and bring out the best in them</li>
           <li>🌟 Your resilience, bouncing back from challenges with grace and strength</li>
         </ul>
-        <p> </p>
-        <p> i swear i will keep typing more things in this rate...</p>
+        <p>i swear i will keep typing more things in this rate...</p>
         <p>You're like a rare butterfly - delicate yet resilient, beautiful in every way, and absolutely one of a kind.</p>
       </section>
 
@@ -940,7 +143,7 @@
           <li>📞 Calling friends and family just to say hi</li>
         </ul>
         <div class="spotify-card">
-          <p class="spotify-heading">💘 Your favorite tune – “Valentine”</p>
+          <p class="spotify-heading">💘 Your favorite tune – "Valentine"</p>
           <iframe 
             src="https://open.spotify.com/embed/track/6cx5CvFhqN19efStehJqoW?utm_source=generator" 
             frameborder="0" 
@@ -950,7 +153,6 @@
             class="spotify-embed">
           </iframe>
         </div>
-
         <p>Each of these favorites shows your appreciation for beauty, connection, and the wonder of being alive.</p>
       </section>
 
@@ -962,23 +164,30 @@
           <img src="images/matchingsong.jpg" alt="Photo 2" class="gallery-photo" />
           <img src="images/grr.jpg" alt="Photo 3" class="gallery-photo" />
         </div>
-        <p></p>
         <p>Every picture tells a story of happiness, adventure, and the incredible light you bring to every moment. These aren't just photos - they're captured pieces of pure joy.</p>
       </section>
 
       <section id="calendar-section" class="content-section hidden">
         <h2>🗓️ Special Moments</h2>
-        <p>Here are some lovely dates we’re holding close to our hearts:</p>
-
-        <div id="live-clock" style="text-align: center; font-size: 1.5rem; margin-bottom: 2rem;">
+        <p>Here are some lovely dates we're holding close to our hearts:</p>
+        <div id="live-clock" style="text-align: center; font-size: 1.3rem; margin-bottom: 1.5rem;">
           ⏰ Time now: <span id="current-time">--:--:--</span>
         </div>
-
         <ul class="content-list" id="countdown-list">
           <!-- Countdown items will be injected here -->
         </ul>
       </section>
-
+<!-- 
+      <section id="love-section" class="content-section hidden">
+        <h2>❤️ Love Taps</h2>
+        <p>Click the heart as many times as you miss her 💗</p>
+        <div style="text-align: center; margin-top: 1rem;">
+          <button id="love-button" style="font-size: 2.5rem; border: none; background: transparent; cursor: pointer;">
+            💖
+          </button>
+          <p id="love-count" style="font-size: 1.2rem; margin-top: 0.5rem;">Taps: 0</p>
+        </div>
+      </section> -->
       <section id="message-section" class="content-section hidden">
         <h2>💌 A Special Message Just For You</h2>
         <p>Dear tiny human with the enormous heart,</p>
@@ -988,219 +197,33 @@
         <p>Thank you for being the incredible person you are. The world is brighter because you're in it, and my life is infinitely better because you're part of it.</p>
         <p>With all my love and endless appreciation,<br>Your biggest fan 💕</p>
       </section>
-      <section id="notes-section" class="content-section hidden" style="padding: 2rem;">
-        <h2 style="margin-bottom: 1rem; font-size: 2rem;">📝 Our Notes</h2>
 
-        <!-- Add Note Button -->
-        <button id="show-note-form" style="margin-bottom: 1.5rem; margin-left: auto; display: block; padding: 0.6rem 1.2rem; font-size: 1rem; border-radius: 25px; background: var(--accent-gradient); color: white; border: none; cursor: pointer;">
-          ➕ Add Note
-        </button>
+      <section id="notes-section" class="content-section hidden">
+        <h2>📝 Our Notes</h2>
+        
+        <!-- Search Bar -->
+        <div class="search-container">
+          <input type="text" id="search-notes" class="search-bar" placeholder="Search your stories, poems, and thoughts..." autocomplete="off">
+          <div class="search-icon">🔍</div>
+        </div>
+
+        <!-- Notes Header -->
+        <div class="notes-header">
+          <div class="notes-stats" id="notes-stats">
+            📊 Loading notes...
+          </div>
+          <button id="show-note-form" class="add-note-btn">
+            ➕ Add Story
+          </button>
+        </div>
 
         <!-- Notes Display -->
-        <div id="note-display" style="display: flex; flex-direction: column; gap: 1rem;"></div>
-
-        <!-- Note Modal -->
+        <div id="note-display" class="notes-grid">
+          <!-- Notes will be displayed here -->
+        </div>
       </section>
     </div>
   </div>
-
-<script>
-  let currentTheme = 'light';
-
-  function toggleTheme() {
-    currentTheme = currentTheme === 'light' ? 'dark' : 'light';
-    document.body.classList.toggle('dark');
-    createSparkles();
-  }
-
-  function createSparkles() {
-    for (let i = 0; i < 6; i++) {
-      const sparkle = document.createElement('div');
-      sparkle.className = 'sparkle';
-      sparkle.style.left = Math.random() * window.innerWidth + 'px';
-      sparkle.style.top = Math.random() * window.innerHeight + 'px';
-      sparkle.style.animationDelay = Math.random() + 's';
-      document.body.appendChild(sparkle);
-      setTimeout(() => sparkle.remove(), 1500);
-    }
-  }
-
-  function showContent(section) {
-    const contentAreas = document.querySelectorAll('.content-section');
-    const navItems = document.querySelectorAll('.nav-item');
-
-    contentAreas.forEach(sec => {
-      sec.classList.remove('active', 'visible');
-      sec.classList.add('hidden');
-    });
-
-    navItems.forEach(item => item.classList.remove('active'));
-
-    const target = document.getElementById(`${section}-section`);
-    if (target) {
-      target.classList.remove('hidden');
-      setTimeout(() => {
-        target.classList.add('active', 'visible');
-      }, 50);
-    }
-
-    const activeNav = document.querySelector(`.nav-item[onclick="showContent('${section}')"]`);
-    if (activeNav) {
-      activeNav.classList.add('active');
-      createHeartEffect(activeNav);
-    }
-  }
-
-  function createHeartEffect(element) {
-    const emojis = ['💖', '💗', '💘', '💞', '💕', '❤️', '🩷'];
-    const heart = document.createElement('div');
-    heart.className = 'heart-float';
-    heart.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-    const { left, top, width, height } = element.getBoundingClientRect();
-    heart.style.left = left + width / 2 + 'px';
-    heart.style.top = top + height / 2 + 'px';
-    document.body.appendChild(heart);
-    setTimeout(() => heart.remove(), 3000);
-  }
-
-  function updateProgressBar() {
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-    const progress = (scrollTop / scrollHeight) * 100;
-    document.querySelector('.progress-bar').style.width = progress + '%';
-  }
-
-  function enhanceFloatingElements() {
-    const elements = document.querySelectorAll('.floating-element');
-    elements.forEach(el => {
-      el.style.animationDuration = (4 + Math.random() * 4) + 's';
-      el.style.animationDelay = (Math.random() * 2) + 's';
-    });
-  }
-
-  window.addEventListener('scroll', updateProgressBar);
-
-  document.addEventListener('DOMContentLoaded', () => {
-    document.body.classList.add('dark');
-    currentTheme = 'dark';
-    enhanceFloatingElements();
-    showContent('about');
-    setTimeout(createSparkles, 500);
-
-    // ✅ Supabase Initialization (fix applied here)
-    const supabase = window.supabase.createClient(
-      'https://gkmcklsoaeasqymnxxjo.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdrbWNrbHNvYWVhc3F5bW54eGpvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE3MDg4NzQsImV4cCI6MjA2NzI4NDg3NH0.k6nLlftIHb_eKvyS9NPmeKVvJ73HFyjEUFpxPbmO8OQ'
-    );
-
-    let currentNoteId = null;
-
-    async function loadNotes() {
-      const display = document.getElementById("note-display");
-      display.innerHTML = "<p style='opacity: 0.6;'>Loading...</p>";
-
-      const { data: notes, error } = await supabase
-        .from('notes')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      display.innerHTML = "";
-
-      if (error) {
-        display.innerHTML = `<p style="color:red;">Error loading notes</p>`;
-        return;
-      }
-
-      if (notes.length === 0) {
-        display.innerHTML = "<p style='opacity: 0.6;'>No notes yet. Add your first one!</p>";
-        return;
-      }
-
-      notes.forEach(note => renderNote(note));
-    }
-
-    function renderNote(note) {
-      const card = document.createElement("div");
-      card.style.padding = "1rem";
-      card.style.borderRadius = "15px";
-      card.style.background = "var(--card-light)";
-      card.style.color = "var(--text-light)";
-      card.style.boxShadow = "var(--shadow-light)";
-      card.style.position = "relative";
-      card.style.marginBottom = "1rem";
-
-      if (document.body.classList.contains("dark")) {
-        card.style.background = "var(--card-dark)";
-        card.style.color = "var(--text-dark)";
-        card.style.boxShadow = "var(--shadow-dark)";
-      }
-
-      card.innerHTML = `
-        <h3 style="margin-bottom: 0.3rem;">${note.title}</h3>
-        <p style="white-space: pre-wrap; margin-bottom: 0.5rem;">${note.body}</p>
-        <p style="font-size: 0.9rem; text-align: right;">— ${note.author}</p>
-        <div style="position: absolute; top: 10px; right: 10px; display: flex; gap: 0.5rem;">
-          <button onclick="editNote('${note.id}', \`${note.title}\`, \`${note.body}\`, \`${note.author}\`)" style="font-size: 0.9rem; background: transparent; border: none; color: inherit;">✏️</button>
-          <button onclick="deleteNote('${note.id}')" style="font-size: 0.9rem; background: transparent; border: none; color: inherit;">🗑️</button>
-        </div>
-      `;
-
-      document.getElementById("note-display").appendChild(card);
-    }
-
-    document.getElementById("note-form").addEventListener("submit", async function (e) {
-      e.preventDefault();
-      const title = document.getElementById("note-title").value.trim();
-      const body = document.getElementById("note-body").value.trim();
-      const author = document.getElementById("note-author").value.trim();
-      if (!title || !body || !author) return;
-
-      if (currentNoteId) {
-        await supabase.from("notes").update({ title, body, author }).eq("id", currentNoteId);
-        currentNoteId = null;
-      } else {
-        await supabase.from("notes").insert([{ title, body, author }]);
-      }
-
-      this.reset();
-      document.getElementById("note-modal").classList.add("hidden");
-      loadNotes();
-    });
-
-    window.editNote = function (id, title, body, author) {
-      document.getElementById("note-title").value = title;
-      document.getElementById("note-body").value = body;
-      document.getElementById("note-author").value = author;
-      currentNoteId = id;
-      document.getElementById("note-modal").classList.remove("hidden");
-    };
-
-    window.deleteNote = async function (id) {
-      if (confirm("Are you sure you want to delete this note?")) {
-        await supabase.from("notes").delete().eq("id", id);
-        loadNotes();
-      }
-    };
-
-    document.getElementById("show-note-form").addEventListener("click", () => {
-      document.getElementById("note-modal").classList.remove("hidden");
-    });
-
-    document.getElementById("close-note-modal").addEventListener("click", () => {
-      document.getElementById("note-form").reset();
-      document.getElementById("note-modal").classList.add("hidden");
-      currentNoteId = null;
-    });
-
-    supabase
-      .channel('realtime-notes')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'notes' }, payload => {
-        loadNotes();
-      })
-      .subscribe();
-
-    loadNotes();
-  });
-</script>
+<script src="script.js"></script>
 </body>
 </html>
