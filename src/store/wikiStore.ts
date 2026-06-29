@@ -335,7 +335,7 @@ Below are all the classes available for players, along with their specialized su
     md += `\n---\n`;
   });
 
-  md += `\nCategories: Classes | Rules | Guides`;
+  md += `\n> [!NOTE]\n> **Custom Classes**: If none of these standard classes fit your character's combat style or Innate Technique, talk to the Dungeon Master! You can design a custom class or subclass tailored to your backstory, subject to DM approval.\n\nCategories: Classes | Rules | Guides`;
   return md;
 }
 
@@ -379,7 +379,7 @@ Players who choose an Anime Class are summoned with core soul attributes corresp
     md += `\n---\n`;
   });
 
-  md += `\nCategories: Anime Classes | Classes | Lore | Rules`;
+  md += `\n> [!NOTE]\n> **Custom Anime Classes**: If you want to play a class from an anime/manhua/manhwa not listed here, talk to the Dungeon Master! You can design a custom class tailored to your favorite character's skills and your Innate Technique, subject to DM approval.\n\nCategories: Anime Classes | Classes | Lore | Rules`;
   return md;
 }
 
@@ -468,6 +468,18 @@ This is the most popular method for determining stats:
 
 ### Method B: The Standard Array
 If you prefer not to roll, you can use these six preset numbers: **15, 14, 13, 12, 10, and 8**. Assign one number to each of your stats.
+
+### Goddess Blessing (Starting Gift)
+When you are summoned by the Goddess of the Rift, she might bestow a **Goddess Blessing** upon your soul. The players who receive this blessing gain immense power, while players without it receive a general compensation buff:
+* **With Goddess Blessing**:
+  * Select exactly **3 core stats** of your choice.
+  * These 3 stats immediately **increase by +3**.
+  * The maximum score cap for these 3 stats increases to **25** (instead of the normal limit of 22).
+  * *Modifiers for Blessed Stats*: Score of **23-24** grants a \`+7\` modifier, and score of **25** grants a \`+8\` modifier.
+  * Your other 3 stats remain at their normal values (capped at 22).
+* **Without Goddess Blessing**:
+  * You receive a general compensation blessing: **+1 to all six ability scores**.
+  * Your maximum score cap for all stats remains at **22**.
 
 ### What do the scores mean?
 * **8 - 9**: Below Average (a weak point)
@@ -667,26 +679,31 @@ In this campaign, you do not select standard D&D fantasy races. When you are sum
 ### 1. Summoned Human
 Summoned from Earth, you retain your human spirit but gain high adaptability.
 * **Stat Bonuses**: +1 to all six ability scores.
+* **Racial Benefit**: **Human Grit** (+1 to all physical weapon damage rolls).
 * **Adapative Talent**: You gain 1 extra General Feat of your choice at Level 1.
 
 ### 2. Rift Elf
 Your body is infused with ambient rift mana, rendering you swift, slender, and magically sensitive.
 * **Stat Bonuses**: +2 Dexterity, +1 Intelligence.
+* **Racial Benefit**: **Mana Attunement** (+1 to all spell attack rolls and spell save DCs).
 * **Racial Traits**: Darkvision (60 ft.), Advantage on saving throws against being Charmed, and magic cannot put you to sleep.
 
 ### 3. Obsidian Dwarf
 Your muscle and bone structure are compressed with heavy obsidian volcanic force.
 * **Stat Bonuses**: +2 Constitution, +1 Strength.
+* **Racial Benefit**: **Obsidian Fortitude** (+1 to Armor Class (AC), and you gain +2 maximum hit points per character level).
 * **Racial Traits**: Poison Resistance (advantage on saves and half damage), proficiency with heavy armor.
 
 ### 4. Beast-Kin
 Your soul is merged with local forest beast spirits, granting you raw animalistic features (claws, tails, ears).
 * **Stat Bonuses**: +2 Strength (or Dexterity), +1 Wisdom.
+* **Racial Benefit**: **Primal Fury** (+2 to all physical melee weapon damage rolls).
 * **Racial Traits**: Base movement speed increases to 40 feet, and your claws deal 1d6 + STR (or DEX) slashing damage on unarmed strikes.
 
 ### 5. Construct Summon
 Your soul is bound to a mechanical automaton body built of stone, gearworks, and mana cores.
 * **Stat Bonuses**: +2 Constitution, +1 Intelligence.
+* **Racial Benefit**: **Iron Core Plating** (Resistance to non-magical bludgeoning damage, and +1 to Armor Class (AC)).
 * **Racial Traits**: Immune to poison damage, you do not need to eat, drink, breathe, or sleep.
 
 ---
@@ -850,7 +867,7 @@ Categories: Lore | Rules | Guides`
 
 const WIKI_STORAGE_KEY = 'dnd_isekai_wiki_pages';
 const WIKI_VERSION_KEY = 'dnd_isekai_wiki_version';
-const CURRENT_WIKI_VERSION = 'v1.3.0';
+const CURRENT_WIKI_VERSION = 'v1.4.0';
 
 export function getWikiPages(): WikiPage[] {
   const data = localStorage.getItem(WIKI_STORAGE_KEY);
