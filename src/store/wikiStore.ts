@@ -1,5 +1,6 @@
 import { FEATS_DATABASE } from '../data/featsData';
 import { CLASSES_DATABASE } from '../data/classesData';
+import { ANIME_CLASSES_DATABASE } from '../data/animeClassesData';
 
 export interface InfoboxRow {
   label: string;
@@ -287,6 +288,50 @@ Below are all the classes available for players, along with their specialized su
   return md;
 }
 
+function generateAnimeClassesPageContent(): string {
+  let md = `| Infobox: Anime Classes |
+| --- | --- |
+| Image | [Icon: A glowing portal displaying various anime runes] |
+| **Origins** | Overlord, Tensura, Log Horizon, JJK, Mushoku Tensei |
+| **Classes Count** | ${ANIME_CLASSES_DATABASE.length} |
+| **Subclasses Count** | ${ANIME_CLASSES_DATABASE.reduce((acc, c) => acc + c.subclasses.length, 0)} |
+| **System** | Reincarnation & Summon Archetypes |
+
+These specialized classes represent legendary character archetypes from popular anime and isekai universes, molded by the Goddess of the Rift for summoned players.
+
+## Contents
+* [[#Summoning Reincarnations]]
+`;
+
+  ANIME_CLASSES_DATABASE.forEach(c => {
+    md += `* [[#${c.name} (${c.animeOrigin})]]\n`;
+  });
+
+  md += `
+## Summoning Reincarnations
+Players who choose an Anime Class are summoned with core soul attributes corresponding to characters from these legendary worlds. These classes scale with your D&D stats and allow you to manifest signature abilities (such as *Predator*, *World Break*, or *Infinity Barrier*).
+
+---
+`;
+
+  ANIME_CLASSES_DATABASE.forEach(c => {
+    md += `\n## ${c.name} (${c.animeOrigin})\n`;
+    md += `* **Primary Stat**: **${c.primaryStat}**\n`;
+    md += `* **Hit Die**: **${c.hitDie}**\n`;
+    md += `* **Description**: ${c.description}\n`;
+    md += `\n### Subclasses of ${c.name}:\n`;
+    
+    c.subclasses.forEach(sub => {
+      md += `- **${sub.name}**: ${sub.description} *(Key Feature: ${sub.keyFeature})*\n`;
+    });
+    
+    md += `\n---\n`;
+  });
+
+  md += `\nCategories: Anime Classes | Classes | Lore | Rules`;
+  return md;
+}
+
 // Seed data
 const SEED_PAGES: WikiPage[] = [
   {
@@ -318,6 +363,7 @@ In this campaign, normal people from Earth are suddenly summoned to a parallel f
 * [[Weapons & Gear]] — Homebrew weapon rules and items.
 * [[Alignment]] — How good, neutral, and evil alignments govern reputation.
 * [[Kingdoms & Lore]] — Roll a d4 to see where your group spawns!
+* [[Anime Classes]] — Playable classes and subclasses from popular anime.
 
 ## The World Rules
 Unlike typical D&D, classes are fluid. Your abilities are directly defined by your **Innate Technique** and your core statistics:
@@ -731,6 +777,14 @@ Before being sent to the surface, the Goddess of the Rift makes the group of fri
 * **Environment**: Murky waters, poisonous vapors, ancient ruins. Dangerous for beginners, but offers forbidden spells and powerful dark gear.
 
 Categories: Lore | Rules | Guides`
+  },
+  {
+    slug: 'anime-classes',
+    title: 'Anime Classes',
+    category: 'Anime Classes',
+    tags: ['classes', 'anime', 'subclasses', 'reincarnation'],
+    lastModified: new Date().toLocaleDateString(),
+    content: generateAnimeClassesPageContent()
   }
 ];
 
@@ -760,6 +814,7 @@ export function getWikiPages(): WikiPage[] {
     const alignmentPage = loaded.find(p => p.slug === 'alignment');
     const kingdomsPage = loaded.find(p => p.slug === 'kingdoms');
     const mainPage = loaded.find(p => p.slug === 'main-page');
+    const animePage = loaded.find(p => p.slug === 'anime-classes');
     
     const needsFeatsUpdate = !featsPage || !featsPage.content.includes('Giant Slayer');
     const needsBgUpdate = !bgFeatsPage || !bgFeatsPage.content.includes('Hobbyist Chef');
@@ -768,9 +823,10 @@ export function getWikiPages(): WikiPage[] {
     const needsRacesUpdate = !racesPage || !racesPage.content.includes('Construct Summon');
     const needsAlignmentUpdate = !alignmentPage || !alignmentPage.content.includes('moral alignment');
     const needsKingdomsUpdate = !kingdomsPage || !kingdomsPage.content.includes('Summoned Kingdoms');
-    const needsMainUpdate = !mainPage || !mainPage.content.includes('Kingdoms & Lore');
+    const needsMainUpdate = !mainPage || !mainPage.content.includes('Anime Classes');
+    const needsAnimeUpdate = !animePage || !animePage.content.includes('Elder Lich');
 
-    let updated = hadJJK || needsFeatsUpdate || needsBgUpdate || needsClassesUpdate || needsCreationUpdate || needsRacesUpdate || needsAlignmentUpdate || needsKingdomsUpdate || needsMainUpdate;
+    let updated = hadJJK || needsFeatsUpdate || needsBgUpdate || needsClassesUpdate || needsCreationUpdate || needsRacesUpdate || needsAlignmentUpdate || needsKingdomsUpdate || needsMainUpdate || needsAnimeUpdate;
 
     if (needsFeatsUpdate) {
       const freshFeatsSeed = SEED_PAGES.find(p => p.slug === 'feats');
@@ -833,6 +889,14 @@ export function getWikiPages(): WikiPage[] {
       if (freshMainSeed) {
         loaded = loaded.filter(p => p.slug !== 'main-page');
         loaded.push(freshMainSeed);
+      }
+    }
+
+    if (needsAnimeUpdate) {
+      const freshAnimeSeed = SEED_PAGES.find(p => p.slug === 'anime-classes');
+      if (freshAnimeSeed) {
+        loaded = loaded.filter(p => p.slug !== 'anime-classes');
+        loaded.push(freshAnimeSeed);
       }
     }
 
