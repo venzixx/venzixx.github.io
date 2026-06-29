@@ -1,4 +1,5 @@
 import { FEATS_DATABASE } from '../data/featsData';
+import { CLASSES_DATABASE } from '../data/classesData';
 
 export interface InfoboxRow {
   label: string;
@@ -209,6 +210,83 @@ Here is the categorized database of standard campaign feats:
   return md;
 }
 
+function generateClassesPageContent(): string {
+  let md = `| Infobox: Classes & Subclasses |
+| --- | --- |
+| Image | [Icon: Glowing runes representing various character class archetypes] |
+| **System** | Fluid Archetypes |
+| **Classes Count** | ${CLASSES_DATABASE.length} |
+| **Subclasses Count** | ${CLASSES_DATABASE.reduce((acc, c) => acc + c.subclasses.length, 0)} |
+| **Custom Innate Techniques** | Pre-approved by DM |
+
+Unlike standard D&D where class features are strictly locked, this campaign utilizes **Fluid Archetypes** determined by your stats and your chosen **Innate Technique**. Here you can find the comprehensive compendium of all starting classes and subclasses.
+
+## Contents
+* [[#How Classes Work]]
+* [[#Stat Scaling & Roles]]
+* [[#Master Classes Database]]
+`;
+
+  // Add all classes to contents
+  CLASSES_DATABASE.forEach(c => {
+    md += `* [[#${c.name}]]\n`;
+  });
+
+  md += `
+## How Classes Work
+When you are summoned, your soul manifests a unique class archetype and an **Innate Technique**. Your core D&D stats govern how your abilities scale. See [[Stats & Scaling]] for details on stat allocations.
+
+## Stat Scaling & Roles
+Your six core D&D stats govern how your Cursed Energy, techniques, and combat role function:
+
+### Strength (STR)
+* **Primary Focus**: Melee physical damage, heavy weapon mastery, kinetic force.
+* **Core Role**: Melee DPS. Scales blunt impacts, physical throw ranges, and allows breaking of physical barriers.
+
+### Dexterity (DEX)
+* **Primary Focus**: Reflexes, speed, armor class scaling, projectile pathing.
+* **Core Role**: Ranged DPS / High Mobility. Powers web-slinging, wall-running, and high-speed blink step dashes.
+
+### Constitution (CON)
+* **Primary Focus**: Hit point pools, defense blocks, health recovery.
+* **Core Role**: Tanking / Healing. Scales maximum health reserves, active barrier defense absorptions, and healing recovery multipliers.
+
+### Intelligence (INT)
+* **Primary Focus**: Magic potency, barrier geometry formulas, cursed energy pools.
+* **Core Role**: Magic DPS / AoE Control. Governs spell slot progression, spell save DCs, and Domain Expansions.
+
+### Wisdom (WIS)
+* **Primary Focus**: Spiritual perception, rune scanning, illusion detection.
+* **Core Role**: Scout / Sensory Buffs. Powers scanning targets for weaknesses, sensing magical portals, and resists mental curses.
+
+### Charisma (CHA)
+* **Primary Focus**: Aura projection, summoning pacts, binding vows.
+* **Core Role**: Shikigami Summoning / Buffing. Scales your summoned beasts' action modifiers and improves the value of active Binding Vows.
+
+---
+
+## Master Classes Database
+Below are all the classes available for players, along with their specialized subclasses:
+`;
+
+  CLASSES_DATABASE.forEach(c => {
+    md += `\n### ${c.name}\n`;
+    md += `* **Primary Stat**: **${c.primaryStat}**\n`;
+    md += `* **Hit Die**: **${c.hitDie}**\n`;
+    md += `* **Description**: ${c.description}\n`;
+    md += `\n#### Subclasses of ${c.name}:\n`;
+    
+    c.subclasses.forEach(sub => {
+      md += `- **${sub.name}**: ${sub.description} *(Key Feature: ${sub.keyFeature})*\n`;
+    });
+    
+    md += `\n---\n`;
+  });
+
+  md += `\nCategories: Classes | Rules | Guides`;
+  return md;
+}
+
 // Seed data
 const SEED_PAGES: WikiPage[] = [
   {
@@ -416,71 +494,7 @@ Categories: Rules | Stats | Combat`
     category: 'Classes',
     tags: ['classes', 'archetypes', 'techniques'],
     lastModified: new Date().toLocaleDateString(),
-    content: `| Infobox: Classes & Techniques |
-| --- | --- |
-| Image | [Icon: Glowing runes representing various character class archetypes] |
-| **System** | Fluid Archetypes |
-| **Core Concept** | Custom Innate Techniques |
-| **Main Archetypes** | Mageblade, Occultist, Acrobat |
-| **Technique Approval** | Required by Dungeon Master |
-
-Unlike standard D&D where class features are strictly locked, this campaign utilizes **Fluid Archetypes** determined by your stats and your chosen **Innate Technique**.
-
-## Contents
-* [[#How Techniques Work]]
-* [[#Stat Scaling & Roles]]
-* [[#Example Archetypes]]
-
-## How Techniques Work
-When you are summoned, your soul manifests an **Innate Technique**. This technique can be a specific superpower (like Spider-Man's webs), magic power (like Gojo's Limitless/Cursed Energy from JJK), or weapon enhancement. 
-
-## Stat Scaling & Roles
-Your six core D&D stats govern how your Cursed Energy, techniques, and combat role function:
-
-### Strength (STR)
-* **Primary Focus**: Melee physical damage, heavy weapon mastery, kinetic force.
-* **Core Role**: Melee DPS. Scales blunt impacts, physical throw ranges, and allows breaking of physical barriers.
-
-### Dexterity (DEX)
-* **Primary Focus**: Reflexes, speed, armor class scaling, projectile pathing.
-* **Core Role**: Ranged DPS / High Mobility. Powers web-slinging, wall-running, and high-speed blink step dashes.
-
-### Constitution (CON)
-* **Primary Focus**: Hit point pools, defense blocks, health recovery.
-* **Core Role**: Tanking / Healing. Scales maximum health reserves, active barrier defense absorptions, and healing recovery multipliers.
-
-### Intelligence (INT)
-* **Primary Focus**: Magic potency, barrier geometry formulas, cursed energy pools.
-* **Core Role**: Magic DPS / AoE Control. Governs spell slot progression, spell save DCs, and Domain Expansions.
-
-### Wisdom (WIS)
-* **Primary Focus**: Spiritual perception, rune scanning, illusion detection.
-* **Core Role**: Scout / Sensory Buffs. Powers scanning targets for weaknesses, sensing magical portals, and resists mental curses.
-
-### Charisma (CHA)
-* **Primary Focus**: Aura projection, summoning pacts, binding vows.
-* **Core Role**: Shikigami Summoning / Buffing. Scales your summoned beasts' action modifiers and improves the value of active Binding Vows.
-
----
-
-## Example Archetypes
-
-### 1. Mageblade (STR + INT)
-* The perfect fusion of steel and sorcery. Mageblades imbue their weapons with active spell slots.
-* **Key Feat**: [[Feats#10. Spellsword Attunement]]
-* **Scaling**: Deals heavy physical weapon damage with spell effects (e.g. hitting a target and immediately triggering a 2nd-level Fireball at the point of impact).
-
-### 2. Occultist / JJK Sorcerer (INT + Dark Magic)
-* Magic users who manipulate cursed energy, barriers, and summon spectral creatures.
-* **Key Feat**: [[Feats#7. Core Overload]]
-* **Innate Technique**: *Barrier Creation* or *Cursed Speech*.
-
-### 3. Spider-Man / Acrobat (DEX + Mobility)
-* Extreme mobility fighters who use ropes, webs, or grappling hooks to move dynamically around the battlefield.
-* **Key Feats**: [[Feats#11. Wall Runner]], [[Feats#13. Acrobat]]
-* **Combat Style**: Gains advantage on attacks when diving from heights or swinging past targets.
-
-Categories: Classes | Rules | Combat`
+    content: generateClassesPageContent()
   },
   {
     slug: 'weapons-gear',
@@ -749,7 +763,7 @@ export function getWikiPages(): WikiPage[] {
     
     const needsFeatsUpdate = !featsPage || !featsPage.content.includes('Giant Slayer');
     const needsBgUpdate = !bgFeatsPage || !bgFeatsPage.content.includes('Hobbyist Chef');
-    const needsClassesUpdate = !classesPage || !classesPage.content.includes('Constitution (CON)');
+    const needsClassesUpdate = !classesPage || !classesPage.content.includes('Void Warden');
     const needsCreationUpdate = !creationPage || creationPage.content.includes('seeded background feats');
     const needsRacesUpdate = !racesPage || !racesPage.content.includes('Construct Summon');
     const needsAlignmentUpdate = !alignmentPage || !alignmentPage.content.includes('moral alignment');
