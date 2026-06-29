@@ -211,6 +211,57 @@ Here is the categorized database of standard campaign feats:
   return md;
 }
 
+function generateInnateTechniquesContent(): string {
+  return `| Infobox: Innate Techniques |
+| --- | --- |
+| Image | [Icon: A raw crystal channeling positive and negative forces] |
+| **System** | Custom Powers |
+| **Primary Attribute** | Determined by power theme |
+| **Cursed Energy Pool** | Level + INT Modifier |
+| **DM Review** | Required for balancing |
+
+When you are summoned to the Summoned Realms, your soul manifests a unique **Innate Technique**. This technique forms the core of your combat identity and magic abilities.
+
+## Contents
+* [[#How Techniques Work]]
+* [[#Stat Scaling & Roles]]
+
+## How Techniques Work
+Unlike standard D&D, players in this campaign are not constrained by traditional class spells. Instead, you design a custom **Innate Technique** corresponding to your character's backstory, personality, or an anime power (e.g. fire generation, shadow summon, kinetic absorption).
+* Your technique requires Cursed Energy (CE) to cast.
+* Your Cursed Energy pool equals **Level + Intelligence Modifier** (minimum of 1).
+* You must cooperate with the Dungeon Master to balance active spell slots, DCs, and range calculations.
+
+## Stat Scaling & Roles
+Your six core D&D stats govern how your Cursed Energy, techniques, and combat role function:
+
+### Strength (STR)
+* **Primary Focus**: Melee physical damage, heavy weapon mastery, kinetic force.
+* **Core Role**: Melee DPS. Scales blunt impacts, physical throw ranges, and allows breaking of physical barriers.
+
+### Dexterity (DEX)
+* **Primary Focus**: Reflexes, speed, armor class scaling, projectile pathing.
+* **Core Role**: Ranged DPS / High Mobility. Powers web-slinging, wall-running, and high-speed blink step dashes.
+
+### Constitution (CON)
+* **Primary Focus**: Hit point pools, defense blocks, health recovery.
+* **Core Role**: Tanking / Healing. Scales maximum health reserves, active barrier defense absorptions, and healing recovery multipliers.
+
+### Intelligence (INT)
+* **Primary Focus**: Magic potency, barrier geometry formulas, cursed energy pools.
+* **Core Role**: Magic DPS / AoE Control. Governs spell slot progression, spell save DCs, and Domain Expansions.
+
+### Wisdom (WIS)
+* **Primary Focus**: Spiritual perception, rune scanning, illusion detection.
+* **Core Role**: Scout / Sensory Buffs. Powers scanning targets for weaknesses, sensing magical portals, and resists mental curses.
+
+### Charisma (CHA)
+* **Primary Focus**: Aura projection, summoning pacts, binding vows.
+* **Core Role**: Shikigami Summoning / Buffing. Scales your summoned beasts' action modifiers and improves the value of active Binding Vows.
+
+Categories: Classes | Rules | Guides`;
+}
+
 function generateClassesPageContent(): string {
   let md = `| Infobox: Classes & Subclasses |
 | --- | --- |
@@ -359,11 +410,12 @@ In this campaign, normal people from Earth are suddenly summoned to a parallel f
 * [[Stats & Scaling]] — How strength, dexterity, and intelligence impact your abilities.
 * [[Background Feats]] — Essential starting feats representing your background.
 * [[Feats]] — The master list of 100+ feats categorized by playstyle.
-* [[Classes & Techniques]] — Overview of custom techniques (like *Spider-Man* or *JJK Sorcerer*).
+* [[Innate Techniques]] — How custom powers work and scale with stats.
+* [[Classes]] — The master list of 42 homebrew classes and 126 subclasses.
+* [[Anime Classes]] — Playable classes and subclasses from popular anime.
 * [[Weapons & Gear]] — Homebrew weapon rules and items.
 * [[Alignment]] — How good, neutral, and evil alignments govern reputation.
 * [[Kingdoms & Lore]] — Roll a d4 to see where your group spawns!
-* [[Anime Classes]] — Playable classes and subclasses from popular anime.
 
 ## The World Rules
 Unlike typical D&D, classes are fluid. Your abilities are directly defined by your **Innate Technique** and your core statistics:
@@ -535,10 +587,18 @@ Categories: Rules | Stats | Combat`
     content: generateGeneralFeatsContent()
   },
   {
-    slug: 'classes-techniques',
-    title: 'Classes & Techniques',
+    slug: 'innate-techniques',
+    title: 'Innate Techniques',
     category: 'Classes',
-    tags: ['classes', 'archetypes', 'techniques'],
+    tags: ['classes', 'techniques', 'scaling'],
+    lastModified: new Date().toLocaleDateString(),
+    content: generateInnateTechniquesContent()
+  },
+  {
+    slug: 'classes',
+    title: 'Classes',
+    category: 'Classes',
+    tags: ['classes', 'archetypes', 'subclasses'],
     lastModified: new Date().toLocaleDateString(),
     content: generateClassesPageContent()
   },
@@ -781,7 +841,7 @@ Categories: Lore | Rules | Guides`
   {
     slug: 'anime-classes',
     title: 'Anime Classes',
-    category: 'Anime Classes',
+    category: 'Classes',
     tags: ['classes', 'anime', 'subclasses', 'reincarnation'],
     lastModified: new Date().toLocaleDateString(),
     content: generateAnimeClassesPageContent()
@@ -808,7 +868,8 @@ export function getWikiPages(): WikiPage[] {
     // Force update feats and background-feats to the new database versions
     const featsPage = loaded.find(p => p.slug === 'feats');
     const bgFeatsPage = loaded.find(p => p.slug === 'background-feats');
-    const classesPage = loaded.find(p => p.slug === 'classes-techniques');
+    const classesPage = loaded.find(p => p.slug === 'classes');
+    const techniquesPage = loaded.find(p => p.slug === 'innate-techniques');
     const creationPage = loaded.find(p => p.slug === 'character-creation');
     const racesPage = loaded.find(p => p.slug === 'races');
     const alignmentPage = loaded.find(p => p.slug === 'alignment');
@@ -816,17 +877,24 @@ export function getWikiPages(): WikiPage[] {
     const mainPage = loaded.find(p => p.slug === 'main-page');
     const animePage = loaded.find(p => p.slug === 'anime-classes');
     
+    // Explicit clean up of old classes-techniques slug if present
+    const hadOldClasses = loaded.some(p => p.slug === 'classes-techniques');
+    if (hadOldClasses) {
+      loaded = loaded.filter(p => p.slug !== 'classes-techniques');
+    }
+
     const needsFeatsUpdate = !featsPage || !featsPage.content.includes('Giant Slayer');
     const needsBgUpdate = !bgFeatsPage || !bgFeatsPage.content.includes('Hobbyist Chef');
     const needsClassesUpdate = !classesPage || !classesPage.content.includes('Void Warden');
+    const needsTechniquesUpdate = !techniquesPage || !techniquesPage.content.includes('Innate Technique');
     const needsCreationUpdate = !creationPage || creationPage.content.includes('seeded background feats');
     const needsRacesUpdate = !racesPage || !racesPage.content.includes('Construct Summon');
     const needsAlignmentUpdate = !alignmentPage || !alignmentPage.content.includes('moral alignment');
     const needsKingdomsUpdate = !kingdomsPage || !kingdomsPage.content.includes('Summoned Kingdoms');
-    const needsMainUpdate = !mainPage || !mainPage.content.includes('Anime Classes');
-    const needsAnimeUpdate = !animePage || !animePage.content.includes('Elder Lich');
+    const needsMainUpdate = !mainPage || !mainPage.content.includes('Innate Techniques');
+    const needsAnimeUpdate = !animePage || animePage.category !== 'Classes' || !animePage.content.includes('Elder Lich');
 
-    let updated = hadJJK || needsFeatsUpdate || needsBgUpdate || needsClassesUpdate || needsCreationUpdate || needsRacesUpdate || needsAlignmentUpdate || needsKingdomsUpdate || needsMainUpdate || needsAnimeUpdate;
+    let updated = hadJJK || hadOldClasses || needsFeatsUpdate || needsBgUpdate || needsClassesUpdate || needsTechniquesUpdate || needsCreationUpdate || needsRacesUpdate || needsAlignmentUpdate || needsKingdomsUpdate || needsMainUpdate || needsAnimeUpdate;
 
     if (needsFeatsUpdate) {
       const freshFeatsSeed = SEED_PAGES.find(p => p.slug === 'feats');
@@ -845,10 +913,18 @@ export function getWikiPages(): WikiPage[] {
     }
 
     if (needsClassesUpdate) {
-      const freshClassesSeed = SEED_PAGES.find(p => p.slug === 'classes-techniques');
+      const freshClassesSeed = SEED_PAGES.find(p => p.slug === 'classes');
       if (freshClassesSeed) {
-        loaded = loaded.filter(p => p.slug !== 'classes-techniques');
+        loaded = loaded.filter(p => p.slug !== 'classes');
         loaded.push(freshClassesSeed);
+      }
+    }
+
+    if (needsTechniquesUpdate) {
+      const freshTechniquesSeed = SEED_PAGES.find(p => p.slug === 'innate-techniques');
+      if (freshTechniquesSeed) {
+        loaded = loaded.filter(p => p.slug !== 'innate-techniques');
+        loaded.push(freshTechniquesSeed);
       }
     }
 
