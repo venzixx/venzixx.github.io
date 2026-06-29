@@ -849,15 +849,31 @@ Categories: Lore | Rules | Guides`
 ];
 
 const WIKI_STORAGE_KEY = 'dnd_isekai_wiki_pages';
+const WIKI_VERSION_KEY = 'dnd_isekai_wiki_version';
+const CURRENT_WIKI_VERSION = 'v1.3.0';
 
 export function getWikiPages(): WikiPage[] {
   const data = localStorage.getItem(WIKI_STORAGE_KEY);
+  const version = localStorage.getItem(WIKI_VERSION_KEY);
+
   if (!data) {
+    localStorage.setItem(WIKI_VERSION_KEY, CURRENT_WIKI_VERSION);
     localStorage.setItem(WIKI_STORAGE_KEY, JSON.stringify(SEED_PAGES));
     return SEED_PAGES;
   }
+
   try {
     let loaded = JSON.parse(data) as WikiPage[];
+
+    // Auto-update seeds if version mismatches (clears cache cleanly for all players)
+    if (version !== CURRENT_WIKI_VERSION) {
+      const seedSlugs = SEED_PAGES.map(s => s.slug);
+      const userPages = loaded.filter(p => !seedSlugs.includes(p.slug));
+      loaded = [...userPages, ...SEED_PAGES];
+      localStorage.setItem(WIKI_VERSION_KEY, CURRENT_WIKI_VERSION);
+      localStorage.setItem(WIKI_STORAGE_KEY, JSON.stringify(loaded));
+      return loaded;
+    }
     
     // Explicitly clean up / remove 'jujutsu-sorcerer' from local storage if present
     const hadJJK = loaded.some(p => p.slug === 'jujutsu-sorcerer');
